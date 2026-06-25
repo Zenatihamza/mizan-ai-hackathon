@@ -1,0 +1,58 @@
+{
+  "scenarios": [
+    {
+      "id": "rental-deposit",
+      "day": 1,
+      "title": "Le bail",
+      "story": "Tu loues ton premier appartement à Alger. Le propriétaire te demande 6 mois de caution en espèces, sans reçu, et refuse de signer un état des lieux.",
+      "question": "Que fais-tu ?",
+      "choices": [
+        {"id": "A", "label": "Tu acceptes pour ne pas perdre l'appartement", "correct": false, "xp": 0, "feedback": "Sans état des lieux, tu ne pourras jamais prouver l'état initial du logement. Sans reçu, ta caution n'a aucune existence légale.", "citation": "Art. 482 Code civil"},
+        {"id": "B", "label": "Tu refuses de signer tant qu'il n'y a pas d'état des lieux et de reçu", "correct": true, "xp": 100, "feedback": "Bravo. Un bail sans état des lieux ni reçu de caution te laisse sans recours. La loi protège le preneur — utilise cette protection.", "citation": "Art. 467, 482 Code civil"},
+        {"id": "C", "label": "Tu signes mais tu filmes l'état de l'appartement", "correct": false, "xp": 30, "feedback": "Bonne intuition mais une vidéo non datée n'a pas la même force qu'un état des lieux contradictoire signé.", "citation": "Art. 477 Code civil"}
+      ]
+    },
+    {
+      "id": "labor-overtime",
+      "day": 12,
+      "title": "L'employeur",
+      "story": "Tu travailles 55 heures par semaine. Ton employeur dit que les heures supplémentaires ne seront pas payées car « c'est la culture de l'entreprise ».",
+      "question": "Quelle est ta première démarche ?",
+      "choices": [
+        {"id": "A", "label": "Tu acceptes : tu as besoin du salaire", "correct": false, "xp": 0, "feedback": "La majoration des heures supplémentaires est un droit légal, pas une faveur. Y renoncer affaiblit tous les travailleurs.", "citation": "Art. 31 Code du travail"},
+        {"id": "B", "label": "Tu dépose une plainte à l'Inspection du travail", "correct": true, "xp": 100, "feedback": "Exact. L'Inspection est gratuite et obligatoire avant le tribunal. Garde tes bulletins de salaire et un journal des heures.", "citation": "Art. 22, 31 Code du travail"},
+        {"id": "C", "label": "Tu vas directement voir un avocat", "correct": false, "xp": 40, "feedback": "Étape valide mais coûteuse. L'Inspection du travail tente la conciliation gratuitement d'abord.", "citation": "Procédure du travail"}
+      ]
+    },
+    {
+      "id": "consumer-refund",
+      "day": 24,
+      "title": "Le commerçant",
+      "story": "Tu achètes un téléphone à 80 000 DA. Il ne s'allume plus au bout de 3 jours. Le vendeur refuse le remboursement : « Pas d'échange, pas de retour ».",
+      "question": "Quel est ton meilleur levier ?",
+      "choices": [
+        {"id": "A", "label": "Tu écris un avis négatif sur Facebook", "correct": false, "xp": 10, "feedback": "Ça fait pression mais ça ne t'apporte pas ton remboursement. Et un avis injurieux peut se retourner contre toi.", "citation": null},
+        {"id": "B", "label": "Tu mets en demeure puis tu saisis la DCP", "correct": true, "xp": 100, "feedback": "La loi 09-03 te donne ce droit — une clause « pas de remboursement » est nulle si le produit est défectueux.", "citation": "Art. 13, 17 Loi 09-03"},
+        {"id": "C", "label": "Tu acceptes un avoir au magasin", "correct": false, "xp": 20, "feedback": "Acceptable mais tu renonces à ton droit au remboursement intégral pour un produit défectueux.", "citation": "Art. 13 Loi 09-03"}
+      ]
+    },
+    {
+      "id": "labor-dismissal",
+      "day": 36,
+      "title": "Le licenciement",
+      "story": "Ton patron te licencie verbalement « pour mauvaise attitude », sans procédure ni préavis. Tu as 4 ans d'ancienneté.",
+      "question": "Quels sont tes droits ?",
+      "choices": [
+        {"id": "A", "label": "Aucun — il est le patron", "correct": false, "xp": 0, "feedback": "Faux. Un licenciement sans procédure disciplinaire ni cause réelle ouvre droit à des indemnités importantes.", "citation": "Art. 73 Code du travail"},
+        {"id": "B", "label": "Tu peux exiger ta réintégration ou une indemnité", "correct": true, "xp": 100, "feedback": "Exact. Le tribunal social peut ordonner réintégration OU indemnité. Saisis l'Inspection sous 15 jours.", "citation": "Art. 73, 74 Code du travail"},
+        {"id": "C", "label": "Seulement le solde de tout compte", "correct": false, "xp": 20, "feedback": "Insuffisant. Tu as droit à bien plus : préavis, indemnités de licenciement, possibles dommages-intérêts.", "citation": "Art. 74 Code du travail"}
+      ]
+    }
+  ],
+  "levels": [
+    {"name": "Citoyen", "name_ar": "مواطن", "min_xp": 0, "emoji": "🥉"},
+    {"name": "Défenseur des droits", "name_ar": "مدافع", "min_xp": 150, "emoji": "🥈"},
+    {"name": "Maître du droit", "name_ar": "خبير", "min_xp": 300, "emoji": "🥇"},
+    {"name": "Protecteur de la communauté", "name_ar": "حامي", "min_xp": 500, "emoji": "🏆"}
+  ]
+}

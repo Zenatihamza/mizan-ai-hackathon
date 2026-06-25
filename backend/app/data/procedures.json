@@ -1,0 +1,92 @@
+{
+  "procedures": [
+    {
+      "id": "casier-judiciaire",
+      "title": "Obtenir un extrait de casier judiciaire (B3)",
+      "title_ar": "الحصول على شهادة السوابق القضائية",
+      "keywords": ["casier", "judiciaire", "b3", "extrait", "sabigha", "antécédents"],
+      "domain": "Justice",
+      "steps": [
+        {"step": 1, "label": "Préparer les documents", "detail": "Pièce d'identité nationale en cours de validité"},
+        {"step": 2, "label": "Accès en ligne", "detail": "Connectez-vous sur le portail du Ministère de la Justice (mjustice.dz) ou Dzair Digital Services"},
+        {"step": 3, "label": "Demande", "detail": "Sélectionnez « Extrait de casier judiciaire » et remplissez le formulaire"},
+        {"step": 4, "label": "Téléchargement", "detail": "Document téléchargeable immédiatement avec valeur légale (loi de nov. 2025)"}
+      ],
+      "where": "100% en ligne — sinon Cour de la wilaya de naissance",
+      "documents": ["Pièce d'identité nationale"],
+      "delay": "Immédiat en ligne",
+      "cost": "Gratuit",
+      "official_url": "https://mjustice.dz"
+    },
+    {
+      "id": "litige-bail",
+      "title": "Récupérer une caution non rendue par un propriétaire",
+      "title_ar": "استرجاع كفالة الإيجار",
+      "keywords": ["caution", "bail", "propriétaire", "loyer", "dépôt", "garantie", "louer"],
+      "domain": "Civil",
+      "steps": [
+        {"step": 1, "label": "Mise en demeure écrite", "detail": "Lettre recommandée avec AR au propriétaire — 15 jours pour restituer"},
+        {"step": 2, "label": "Saisir le médiateur", "detail": "Médiation judiciaire à la maison de justice (gratuit)"},
+        {"step": 3, "label": "Tribunal de proximité", "detail": "Si médiation échoue, saisir le tribunal du lieu du bien"},
+        {"step": 4, "label": "Audience", "detail": "Présenter le contrat de bail, l'état des lieux et les preuves de paiement"}
+      ],
+      "where": "Maison de justice puis Tribunal de proximité",
+      "documents": ["Contrat de bail", "État des lieux entrée/sortie", "Preuve de paiement caution", "Pièce d'identité"],
+      "delay": "1 à 6 mois",
+      "cost": "Gratuit jusqu'au tribunal",
+      "legal_basis": ["Art. 482 Code civil"]
+    },
+    {
+      "id": "litige-travail",
+      "title": "Signaler un employeur (heures, salaire, licenciement)",
+      "title_ar": "تقديم شكوى ضد رب العمل",
+      "keywords": ["travail", "employeur", "patron", "salaire", "licenciement", "khdma", "congé"],
+      "domain": "Travail",
+      "steps": [
+        {"step": 1, "label": "Inspection du travail", "detail": "Déposer une plainte écrite à l'Inspection du travail de votre wilaya"},
+        {"step": 2, "label": "Tentative de conciliation", "detail": "L'inspecteur convoque l'employeur — délai légal 15 jours"},
+        {"step": 3, "label": "Tribunal social", "detail": "Si pas de conciliation, saisir le tribunal section sociale"},
+        {"step": 4, "label": "Jugement", "detail": "Le tribunal peut ordonner paiement, réintégration ou indemnités"}
+      ],
+      "where": "Inspection du travail de la wilaya, puis Tribunal section sociale",
+      "documents": ["Contrat de travail", "Bulletins de salaire", "Pièce d'identité", "Témoignages éventuels"],
+      "delay": "1 à 3 mois pour conciliation",
+      "cost": "Gratuit",
+      "legal_basis": ["Art. 22", "Art. 39", "Art. 73 Code du travail"]
+    },
+    {
+      "id": "refus-remboursement",
+      "title": "Forcer un commerçant à rembourser un produit défectueux",
+      "title_ar": "إجبار التاجر على إرجاع المبلغ",
+      "keywords": ["remboursement", "produit", "magasin", "défectueux", "vendeur", "achat"],
+      "domain": "Consommation",
+      "steps": [
+        {"step": 1, "label": "Réclamation écrite", "detail": "Lettre recommandée AR au commerçant"},
+        {"step": 2, "label": "Direction du commerce", "detail": "Saisir la DCP (Direction du Commerce et des Prix) de la wilaya"},
+        {"step": 3, "label": "Association de consommateurs", "detail": "FADC ou APOCE peuvent intervenir gratuitement"},
+        {"step": 4, "label": "Tribunal de proximité", "detail": "Action en restitution si litige < 200 000 DA"}
+      ],
+      "where": "DCP, puis Tribunal de proximité",
+      "documents": ["Ticket de caisse / facture", "Photos du produit", "Échanges écrits"],
+      "delay": "2 semaines à 2 mois",
+      "cost": "Gratuit",
+      "legal_basis": ["Art. 13 Loi 09-03"]
+    },
+    {
+      "id": "aide-juridictionnelle",
+      "title": "Obtenir un avocat gratuit (aide juridictionnelle)",
+      "title_ar": "الحصول على المساعدة القضائية",
+      "keywords": ["avocat", "gratuit", "aide", "juridictionnelle", "pauvre", "ressources"],
+      "domain": "Accès au droit",
+      "steps": [
+        {"step": 1, "label": "Formulaire", "detail": "Retirer le formulaire au Bureau d'aide juridictionnelle de la Cour"},
+        {"step": 2, "label": "Justificatifs", "detail": "Joindre justificatifs de revenus + situation familiale"},
+        {"step": 3, "label": "Décision", "detail": "Le bureau statue sous 1 mois — un avocat est désigné d'office"}
+      ],
+      "where": "Bureau d'aide juridictionnelle de la Cour",
+      "documents": ["Pièce d'identité", "Justificatifs de revenus", "Composition familiale"],
+      "delay": "1 mois",
+      "cost": "Gratuit"
+    }
+  ]
+}

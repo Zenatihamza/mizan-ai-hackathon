@@ -1,0 +1,18 @@
+{
+  "code": "Loi sur la protection du consommateur",
+  "code_ar": "قانون حماية المستهلك",
+  "reference": "Loi n° 09-03 du 25 février 2009 relative à la protection du consommateur et à la répression des fraudes",
+  "note": "Articles illustratifs pour la démo — à vérifier contre le texte officiel avant production.",
+  "articles": [
+    {
+      "article": "Art. 13",
+      "text": "Le consommateur dispose d'un droit de rétractation et de remboursement en cas de produit non conforme, défectueux ou impropre à l'usage auquel il est destiné.",
+      "topics": ["remboursement", "produit défectueux", "droits du consommateur"]
+    },
+    {
+      "article": "Art. 17",
+      "text": "Toute clause d'un contrat de vente créant un déséquilibre significatif entre les droits et obligations des parties au détriment du consommateur est réputée abusive et est nulle de plein droit.",
+      "topics": ["clauses abusives", "vente", "déséquilibre"]
+    }
+  ]
+}

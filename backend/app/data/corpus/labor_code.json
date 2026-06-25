@@ -1,0 +1,43 @@
+{
+  "code": "Code du travail",
+  "code_ar": "قانون العمل",
+  "reference": "Loi n° 90-11 du 21 avril 1990 relative aux relations de travail",
+  "note": "Articles illustratifs pour la démo — à vérifier contre le texte officiel avant production.",
+  "articles": [
+    {
+      "article": "Art. 22",
+      "text": "La durée légale hebdomadaire de travail est fixée à quarante (40) heures dans les conditions normales de travail. Toute heure effectuée au-delà donne lieu à majoration au titre des heures supplémentaires.",
+      "topics": ["heures de travail", "heures supplémentaires", "durée du travail"]
+    },
+    {
+      "article": "Art. 31",
+      "text": "Les heures supplémentaires donnent lieu au paiement d'une majoration qui ne peut en aucun cas être inférieure à 50% du salaire horaire normal.",
+      "topics": ["heures supplémentaires", "majoration", "salaire"]
+    },
+    {
+      "article": "Art. 39",
+      "text": "Tout travailleur a droit à un congé annuel rémunéré payé par l'employeur. Le droit au congé est calculé sur la base de deux jours et demi par mois de travail.",
+      "topics": ["congé annuel", "congés payés", "vacances"]
+    },
+    {
+      "article": "Art. 40",
+      "text": "La durée du congé annuel ne peut être inférieure à trente (30) jours calendaires par année de travail.",
+      "topics": ["congé annuel", "durée minimum"]
+    },
+    {
+      "article": "Art. 73",
+      "text": "Le licenciement à caractère disciplinaire ne peut intervenir que pour faute grave, après mise en demeure et respect de la procédure disciplinaire. L'employeur ne peut rompre le contrat sans motif et sans préavis légal.",
+      "topics": ["licenciement", "rupture du contrat", "préavis", "faute grave"]
+    },
+    {
+      "article": "Art. 74",
+      "text": "Le travailleur licencié sans cause réelle et sérieuse a droit à une indemnité de licenciement et à un préavis dont la durée minimale est fixée par voie réglementaire.",
+      "topics": ["licenciement", "indemnité", "préavis"]
+    },
+    {
+      "article": "Art. 87 bis",
+      "text": "Le salaire national minimum garanti (SNMG) est fixé par décret. Tout salaire inférieur au SNMG est nul de plein droit.",
+      "topics": ["salaire minimum", "SNMG", "rémunération"]
+    }
+  ]
+}

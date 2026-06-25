@@ -1,0 +1,38 @@
+{
+  "code": "Code civil",
+  "code_ar": "القانون المدني",
+  "reference": "Ordonnance n° 75-58 du 26 septembre 1975 portant Code civil",
+  "note": "Articles illustratifs pour la démo — à vérifier contre le texte officiel avant production.",
+  "articles": [
+    {
+      "article": "Art. 106",
+      "text": "Le contrat fait la loi des parties. Il ne peut être révoqué ni modifié que de leur consentement mutuel ou pour les causes prévues par la loi. Il doit être exécuté de bonne foi.",
+      "topics": ["contrat", "obligations", "bonne foi"]
+    },
+    {
+      "article": "Art. 110",
+      "text": "Lorsque le contrat est d'adhésion et comporte des clauses abusives, le juge peut, à la demande de la partie adhérente, modifier ces clauses ou en dispenser cette partie, et ce nonobstant toute convention contraire.",
+      "topics": ["clauses abusives", "contrat d'adhésion", "protection du consommateur"]
+    },
+    {
+      "article": "Art. 467",
+      "text": "Le bail est un contrat par lequel le bailleur s'oblige à procurer au preneur la jouissance d'une chose pendant un temps déterminé, moyennant un prix que le preneur s'oblige à lui payer.",
+      "topics": ["bail", "location", "loyer"]
+    },
+    {
+      "article": "Art. 477",
+      "text": "Le bailleur ne peut, pendant la durée du bail, modifier l'état des lieux loués ni rien faire qui empêche le preneur d'en jouir paisiblement.",
+      "topics": ["bail", "obligations du bailleur", "jouissance paisible"]
+    },
+    {
+      "article": "Art. 482",
+      "text": "Le preneur a droit à la restitution intégrale de toute somme versée à titre de garantie ou de caution à l'expiration du bail, déduction faite des dégradations qui lui sont imputables et qui excèdent l'usure normale.",
+      "topics": ["caution", "dépôt de garantie", "restitution", "bail"]
+    },
+    {
+      "article": "Art. 124",
+      "text": "Tout fait quelconque de l'homme qui cause à autrui un dommage oblige celui par la faute duquel il est arrivé à le réparer.",
+      "topics": ["responsabilité civile", "dommages-intérêts"]
+    }
+  ]
+}
