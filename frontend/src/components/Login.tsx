@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
-import { Scale, Loader2, Mail, Lock, User as UserIcon, Languages } from "lucide-react";
+import { Scale, Loader2, Mail, Lock, User as UserIcon, Languages, MapPin } from "lucide-react";
 import { useAuth } from "../lib/auth";
 import { useI18n } from "../lib/i18n";
+import { WILAYAS } from "../lib/wilayas";
 
 export default function Login() {
   const { user, login, register } = useAuth();
@@ -15,6 +16,7 @@ export default function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [wilaya, setWilaya] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +30,7 @@ export default function Login() {
       if (mode === "login") {
         await login(email, password);
       } else {
-        await register(name, email, password);
+        await register(name, email, password, wilaya || undefined);
       }
       navigate(from, { replace: true });
     } catch (err: any) {
@@ -83,7 +85,27 @@ export default function Login() {
 
           <form onSubmit={submit} className="space-y-4">
             {mode === "register" && (
-              <Field icon={UserIcon} placeholder={t("login.name")} value={name} onChange={setName} type="text" />
+              <>
+                <Field icon={UserIcon} placeholder={t("login.name")} value={name} onChange={setName} type="text" />
+                <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 focus-within:border-gold/50 transition">
+                  <MapPin className="w-4 h-4 text-slate-500 shrink-0" />
+                  <select
+                    required
+                    value={wilaya}
+                    onChange={(e) => setWilaya(e.target.value)}
+                    className="bg-transparent outline-none flex-1 text-sm text-slate-100 [&>option]:bg-slate-900"
+                  >
+                    <option value="" disabled>
+                      {t("login.wilaya")}
+                    </option>
+                    {WILAYAS.map((w, i) => (
+                      <option key={w} value={w}>
+                        {i + 1} — {w}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
             )}
             <Field icon={Mail} placeholder={t("login.email")} value={email} onChange={setEmail} type="email" />
             <Field icon={Lock} placeholder={t("login.password")} value={password} onChange={setPassword} type="password" />

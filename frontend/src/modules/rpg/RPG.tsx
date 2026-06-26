@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   Trophy,
-  Volume2,
   RotateCcw,
   CheckCircle2,
   XCircle,
@@ -11,7 +10,6 @@ import {
   BookOpen,
 } from "lucide-react";
 import * as api from "../../lib/api";
-import { speak, stopSpeaking } from "../../lib/voice";
 import { useI18n } from "../../lib/i18n";
 
 export default function RPG() {
@@ -41,7 +39,6 @@ export default function RPG() {
         setIdx(firstUnfinished === -1 ? scn.length : firstUnfinished);
       })
       .finally(() => setReady(true));
-    return () => stopSpeaking();
   }, []);
 
   const scenario = scenarios[idx];
@@ -72,33 +69,24 @@ export default function RPG() {
       setXp(newXp);
       setCompleted(newCompleted);
       api.saveProgress(newXp, newCompleted).catch(() => {});
-      if (r.lesson_ar) setTimeout(() => speak(r.lesson_ar!, { rate: 0.9 }), 400);
     } finally {
       setLoading(false);
     }
   }
 
   function next() {
-    stopSpeaking();
     setPicked(null);
     setFeedback(null);
     setIdx((i) => i + 1);
   }
 
   async function restart() {
-    stopSpeaking();
     setXp(0);
     setCompleted([]);
     setIdx(0);
     setPicked(null);
     setFeedback(null);
     api.saveProgress(0, []).catch(() => {});
-  }
-
-  function narrate() {
-    if (!scenario) return;
-    const ar = [scenario.story_ar, scenario.question_ar].filter(Boolean).join(" ");
-    speak(ar || `${scenario.story} ${scenario.question}`, { rate: 0.9 });
   }
 
   if (!ready) return <div className="text-slate-400">Chargement du simulateur…</div>;
@@ -131,9 +119,6 @@ export default function RPG() {
             </span>
             <span>{scenario.title}</span>
           </div>
-          <button onClick={narrate} className="btn-ghost !px-3 !py-1.5 !text-xs" title="Écouter en arabe">
-            <Volume2 className="w-3.5 h-3.5" /> Écouter en arabe
-          </button>
         </div>
 
         <p className="text-lg leading-relaxed">{scenario.story}</p>
@@ -212,18 +197,8 @@ export default function RPG() {
 
             {feedback.lesson && (
               <div className="rounded-xl border border-gold/30 bg-gold/5 p-4">
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-gold">
-                    <BookOpen className="w-3.5 h-3.5" /> Ce qu'il faut retenir
-                  </div>
-                  {feedback.lesson_ar && (
-                    <button
-                      onClick={() => speak(feedback.lesson_ar!, { rate: 0.9 })}
-                      className="btn-ghost !px-2.5 !py-1 !text-xs"
-                    >
-                      <Volume2 className="w-3.5 h-3.5" /> Réécouter
-                    </button>
-                  )}
+                <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-gold mb-2">
+                  <BookOpen className="w-3.5 h-3.5" /> Ce qu'il faut retenir
                 </div>
                 <p className="text-sm text-slate-100">{feedback.lesson}</p>
                 {feedback.lesson_ar && (

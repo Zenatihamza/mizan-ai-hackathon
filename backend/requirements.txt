@@ -8,6 +8,8 @@ pydantic==2.9.2
 python-dotenv==1.0.1
 SQLAlchemy==2.0.36
 PyJWT==2.10.1
+scikit-learn==1.5.2
+joblib==1.4.2
 # Optional: ChromaDB for vector RAG. Requires Microsoft C++ Build Tools on Windows.
 # Without it, the system uses keyword search (works fine for the demo corpus).
 # To enable: install Build Tools from https://visualstudio.microsoft.com/visual-cpp-build-tools/

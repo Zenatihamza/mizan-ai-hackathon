@@ -8,6 +8,7 @@ class RegisterRequest(BaseModel):
     name: str
     email: str
     password: str
+    wilaya: Optional[str] = None
 
 
 class LoginRequest(BaseModel):
@@ -19,6 +20,7 @@ class UserOut(BaseModel):
     id: int
     name: str
     email: str
+    wilaya: Optional[str] = None
 
     class Config:
         from_attributes = True

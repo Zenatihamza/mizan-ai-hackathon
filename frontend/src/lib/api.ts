@@ -39,6 +39,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  wilaya?: string | null;
 }
 export interface AuthResponse {
   access_token: string;
@@ -151,10 +152,15 @@ export interface SendMessageResponse {
 }
 
 // ---------- Auth ----------
-export function register(name: string, email: string, password: string): Promise<AuthResponse> {
+export function register(
+  name: string,
+  email: string,
+  password: string,
+  wilaya?: string
+): Promise<AuthResponse> {
   return jsonFetch("/auth/register", {
     method: "POST",
-    body: JSON.stringify({ name, email, password }),
+    body: JSON.stringify({ name, email, password, wilaya: wilaya ?? null }),
   });
 }
 export function login(email: string, password: string): Promise<AuthResponse> {

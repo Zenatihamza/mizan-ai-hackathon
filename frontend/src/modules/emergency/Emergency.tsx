@@ -10,12 +10,10 @@ import {
   MapPin,
   Phone,
   ArrowLeft,
-  Volume2,
   Siren,
 } from "lucide-react";
 import * as api from "../../lib/api";
 import { useI18n } from "../../lib/i18n";
-import { speak } from "../../lib/voice";
 
 const ICONS: Record<string, any> = {
   shield: Shield,
@@ -92,19 +90,11 @@ function Guidance({
   const pick = (b: api.Bilingual) => (lang === "ar" ? b.ar : b.fr);
   const Icon = ICONS[situation.icon] || AlertTriangle;
 
-  function readAloud() {
-    const txt = [situation.label.ar, "حقوقك:", ...situation.rights.map((r) => r.ar)].join(". ");
-    speak(txt, { rate: 0.9 });
-  }
-
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between gap-3 flex-wrap">
+      <div className="flex items-center gap-3 flex-wrap">
         <button onClick={onBack} className="btn-ghost !py-1.5 !px-3 !text-sm">
           <ArrowLeft className="w-4 h-4" /> {lang === "ar" ? "رجوع" : "Retour"}
-        </button>
-        <button onClick={readAloud} className="btn-ghost !py-1.5 !px-3 !text-sm">
-          <Volume2 className="w-4 h-4" /> {lang === "ar" ? "استمع" : "Écouter"}
         </button>
       </div>
 

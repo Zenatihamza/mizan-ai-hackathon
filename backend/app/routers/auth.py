@@ -27,6 +27,7 @@ def register(req: RegisterRequest, db: Session = Depends(get_db)):
     user = User(
         name=req.name.strip(),
         email=email,
+        wilaya=(req.wilaya or "").strip() or None,
         hashed_password=hash_password(req.password),
     )
     db.add(user)

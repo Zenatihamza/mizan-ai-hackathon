@@ -3,13 +3,11 @@ import {
   Send,
   Loader2,
   Plus,
-  Volume2,
   Trash2,
   MessageSquare,
   Scale,
 } from "lucide-react";
 import * as api from "../../lib/api";
-import { speak } from "../../lib/voice";
 import { useI18n } from "../../lib/i18n";
 
 export default function Chat() {
@@ -218,16 +216,6 @@ function MessageBubble({ message }: { message: api.ChatMessage }) {
               </div>
             ))}
           </div>
-        )}
-
-        {!isUser && (message.content_ar || message.content) && (
-          <button
-            onClick={() => speak(message.content_ar || message.content)}
-            className="mt-2 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition"
-            title="Écouter en arabe"
-          >
-            <Volume2 className="w-3.5 h-3.5" /> Écouter
-          </button>
         )}
       </div>
     </div>

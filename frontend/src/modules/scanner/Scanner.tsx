@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Upload,
   Loader2,
-  Volume2,
   AlertTriangle,
   CheckCircle2,
   AlertCircle,
@@ -11,7 +10,6 @@ import {
   PlayCircle,
 } from "lucide-react";
 import { scanContract, getDemoScan, type ScanResult } from "../../lib/api";
-import { speak } from "../../lib/voice";
 import { useI18n } from "../../lib/i18n";
 
 const verdictStyles: Record<string, { ring: string; bg: string; text: string; label: string }> = {
@@ -147,16 +145,6 @@ function ScanResultView({
   const oranges = result.clauses.filter((c) => c.verdict === "orange").length;
   const greens = result.clauses.filter((c) => c.verdict === "green").length;
 
-  function speakSummary() {
-    const reds = result.clauses.filter((c) => c.verdict === "red").length;
-    const ar =
-      `درجة شرعية العقد ${result.overall_score} من 100. ` +
-      (reds > 0
-        ? `انتبه: يحتوي هذا العقد على ${reds} بنود غير قانونية. لا توقّع قبل مراجعتها.`
-        : "العقد متوازن بشكل عام، لكن اقرأ كل بند بعناية.");
-    speak(ar, { rate: 0.9 });
-  }
-
   return (
     <div className="space-y-6">
       <section className="card p-6 flex items-center justify-between flex-wrap gap-4">
@@ -176,9 +164,6 @@ function ScanResultView({
               légitimité / 100
             </div>
           </div>
-          <button onClick={speakSummary} className="btn-ghost" title="Écouter en darija">
-            <Volume2 className="w-4 h-4" /> Darija
-          </button>
         </div>
       </section>
 
@@ -280,9 +265,6 @@ function StatPill({
 
 function ClauseCard({ clause }: { clause: import("../../lib/api").ClauseAnalysis }) {
   const s = verdictStyles[clause.verdict];
-  function speakClause() {
-    speak(clause.explanation_ar || clause.explanation, { rate: 0.9 });
-  }
   return (
     <div className={`card border ${s.ring} p-5`}>
       <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -333,9 +315,6 @@ function ClauseCard({ clause }: { clause: import("../../lib/api").ClauseAnalysis
             </div>
           )}
         </div>
-        <button onClick={speakClause} className="btn-ghost shrink-0" title="Écouter en darija">
-          <Volume2 className="w-4 h-4" />
-        </button>
       </div>
     </div>
   );

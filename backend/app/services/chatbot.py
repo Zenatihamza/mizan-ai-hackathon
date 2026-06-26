@@ -12,8 +12,12 @@ from typing import List, Dict, Optional
 
 from app.services import rag as rag_svc
 from app.services import llm as llm_svc
+from app.ml import classifier as ml_classifier
 
 _PROCS_PATH = Path(__file__).parent.parent / "data" / "procedures.json"
+
+# Minimum confidence for the trained ML classifier to be trusted over keywords.
+_CONF_THRESHOLD = 0.35
 
 
 def _procedures() -> List[dict]:
@@ -91,6 +95,15 @@ _DISCLAIMER = (
 _DISCLAIMER_AR = " \n\nهذه معلومة عامة ولا تغني عن استشارة محامٍ."
 
 
+# The trained ML classifier outputs one of these labels, in the SAME ORDER as _INTENTS.
+# If you reorder _INTENTS, reorder this list too.
+_LABEL_ORDER = [
+    "rental", "labor", "dismissal", "consumer", "legal_aid",
+    "family", "custody", "inheritance", "fraud", "neighbor",
+]
+_LABEL_TO_INTENT = {lbl: it for lbl, it in zip(_LABEL_ORDER, _INTENTS)}
+
+
 def _match_intent(message: str) -> Optional[dict]:
     m = message.lower()
     best, best_score = None, 0
@@ -99,6 +112,16 @@ def _match_intent(message: str) -> Optional[dict]:
         if score > best_score:
             best, best_score = intent, score
     return best if best_score > 0 else None
+
+
+def _classify_intent(message: str) -> Optional[dict]:
+    """Route with the trained ML classifier; fall back to keyword matching."""
+    label, conf = ml_classifier.predict(message)
+    if label and conf >= _CONF_THRESHOLD:
+        intent = _LABEL_TO_INTENT.get(label)
+        if intent:
+            return intent
+    return _match_intent(message)
 
 
 def _citations_for(query: str, limit: int = 2) -> List[Dict]:
@@ -110,7 +133,7 @@ def _citations_for(query: str, limit: int = 2) -> List[Dict]:
 
 
 def _mock_answer(message: str) -> Dict:
-    intent = _match_intent(message)
+    intent = _classify_intent(message)
     citations = _citations_for(message, limit=2)
     if intent:
         proc = next((p for p in _procedures() if p["id"] == intent["proc"]), None)

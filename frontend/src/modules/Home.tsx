@@ -6,7 +6,7 @@ import {
   Gamepad2,
   BookOpen,
   Siren,
-  Volume2,
+  Languages,
   ArrowRight,
 } from "lucide-react";
 import { useAuth } from "../lib/auth";
@@ -28,7 +28,7 @@ export default function Home() {
     <div className="space-y-10">
       <section className="text-center pt-6 pb-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold mb-5">
-          <Volume2 className="w-3.5 h-3.5" /> {t("home.badge")}
+          <Languages className="w-3.5 h-3.5" /> {t("home.badge")}
         </div>
         <h1 className="text-5xl md:text-6xl font-brand font-extrabold tracking-tight">
           {t("home.hello")} {user?.name?.split(" ")[0]},

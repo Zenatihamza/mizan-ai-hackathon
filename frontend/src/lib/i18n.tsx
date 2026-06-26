@@ -41,11 +41,12 @@ const DICT: Dict = {
   "login.name": { fr: "Nom complet", ar: "الاسم الكامل" },
   "login.email": { fr: "Email", ar: "البريد الإلكتروني" },
   "login.password": { fr: "Mot de passe", ar: "كلمة المرور" },
+  "login.wilaya": { fr: "Choisis ta wilaya", ar: "اختر ولايتك" },
   "login.doLogin": { fr: "Se connecter", ar: "دخول" },
   "login.doRegister": { fr: "Créer mon compte", ar: "إنشاء حسابي" },
 
   // Home
-  "home.badge": { fr: "Expliqué en arabe — à voix haute", ar: "مشروح بالعربية — صوتياً" },
+  "home.badge": { fr: "Le droit algérien, en français et en arabe", ar: "القانون الجزائري، بالفرنسية والعربية" },
   "home.hello": { fr: "Bonjour", ar: "مرحباً" },
   "home.question": { fr: "que dit la loi ?", ar: "ماذا يقول القانون؟" },
   "home.intro": {
@@ -74,8 +75,8 @@ const DICT: Dict = {
   "home.gps.cta": { fr: "Trouver mon chemin", ar: "جد طريقي" },
   "home.rpg.title": { fr: "Apprendre mes droits", ar: "تعلّم حقوقي" },
   "home.rpg.sub": {
-    fr: "Vis des situations réelles et apprends le droit algérien, expliqué à voix haute en arabe.",
-    ar: "عش مواقف حقيقية وتعلّم القانون الجزائري، مشروحاً صوتياً بالعربية.",
+    fr: "Vis des situations réelles et apprends le droit algérien, expliqué en français et en arabe.",
+    ar: "عش مواقف حقيقية وتعلّم القانون الجزائري، مشروحاً بالفرنسية والعربية.",
   },
   "home.rpg.cta": { fr: "Commencer", ar: "ابدأ" },
   "home.emergency.title": { fr: "Mode urgence", ar: "وضع الطوارئ" },
@@ -114,8 +115,8 @@ const DICT: Dict = {
   // RPG
   "rpg.title": { fr: "Apprendre mes droits", ar: "تعلّم حقوقي" },
   "rpg.subtitle": {
-    fr: "Vis des situations réelles. Chaque décision t'apprend une règle du droit algérien, expliquée à voix haute en arabe.",
-    ar: "عش مواقف حقيقية. كل قرار يعلّمك قاعدة من القانون الجزائري، مشروحة صوتياً بالعربية.",
+    fr: "Vis des situations réelles. Chaque décision t'apprend une règle du droit algérien, en français et en arabe.",
+    ar: "عش مواقف حقيقية. كل قرار يعلّمك قاعدة من القانون الجزائري، بالفرنسية والعربية.",
   },
 
   // Chat

@@ -7,7 +7,6 @@ import {
   Clock,
   Wallet,
   ExternalLink,
-  Volume2,
   Building2,
 } from "lucide-react";
 import {
@@ -15,8 +14,8 @@ import {
   searchProcedure,
   type Procedure,
 } from "../../lib/api";
-import { speak } from "../../lib/voice";
 import { useI18n } from "../../lib/i18n";
+import { useAuth } from "../../lib/auth";
 
 const SUGGESTIONS = [
   "Mon propriétaire ne me rend pas la caution",
@@ -26,7 +25,9 @@ const SUGGESTIONS = [
 ];
 
 export default function GPS() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const { user } = useAuth();
+  const wilaya = user?.wilaya || null;
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Procedure[]>([]);
   const [loading, setLoading] = useState(false);
@@ -55,6 +56,14 @@ export default function GPS() {
       <header>
         <h1 className="text-3xl font-brand font-bold">{t("gps.title")}</h1>
         <p className="text-slate-400 mt-1">{t("gps.subtitle")}</p>
+        {wilaya && (
+          <div className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-xl bg-gold/10 border border-gold/30 text-gold text-sm">
+            <MapPin className="w-4 h-4" />
+            {lang === "ar"
+              ? `الإجراءات موجَّهة لولاية ${wilaya}`
+              : `Démarches localisées — wilaya de ${wilaya}`}
+          </div>
+        )}
       </header>
 
       <div className="card p-5">
@@ -111,20 +120,14 @@ export default function GPS() {
           ))}
         </aside>
 
-        {selected && <ProcedureDetail proc={selected} />}
+        {selected && <ProcedureDetail proc={selected} wilaya={wilaya} />}
       </div>
     </div>
   );
 }
 
-function ProcedureDetail({ proc }: { proc: Procedure }) {
-  function listen() {
-    const txt = `${proc.title}. ${proc.steps
-      .map((s, i) => `Étape ${i + 1}: ${s.label}. ${s.detail}`)
-      .join(". ")}`;
-    speak(txt, { rate: 0.9 });
-  }
-
+function ProcedureDetail({ proc, wilaya }: { proc: Procedure; wilaya: string | null }) {
+  const where = wilaya ? `${proc.where} — wilaya de ${wilaya}` : proc.where;
   return (
     <article className="card p-6 space-y-5">
       <header className="flex items-start justify-between gap-3 flex-wrap">
@@ -134,13 +137,10 @@ function ProcedureDetail({ proc }: { proc: Procedure }) {
           </div>
           <h2 className="text-2xl font-bold">{proc.title}</h2>
         </div>
-        <button onClick={listen} className="btn-ghost">
-          <Volume2 className="w-4 h-4" /> Écouter
-        </button>
       </header>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Meta icon={Building2} label="Où" value={proc.where} />
+        <Meta icon={Building2} label="Où" value={where} />
         <Meta icon={Clock} label="Délai" value={proc.delay} />
         <Meta icon={Wallet} label="Coût" value={proc.cost} />
         <Meta
