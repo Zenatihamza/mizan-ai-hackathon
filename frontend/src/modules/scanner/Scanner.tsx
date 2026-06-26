@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { scanContract, getDemoScan, type ScanResult } from "../../lib/api";
 import { speak } from "../../lib/voice";
+import { useI18n } from "../../lib/i18n";
 
 const verdictStyles: Record<string, { ring: string; bg: string; text: string; label: string }> = {
   red: { ring: "border-rose-500/60", bg: "bg-rose-500/10", text: "text-rose-400", label: "Abusif" },
@@ -26,6 +27,7 @@ function scoreColor(s: number) {
 }
 
 export default function Scanner() {
+  const { t } = useI18n();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -72,14 +74,11 @@ export default function Scanner() {
     <div className="space-y-8">
       <header className="flex items-start justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Scanner de contrats</h1>
-          <p className="text-slate-400 mt-1">
-            Prends en photo un contrat. Mizan détecte les clauses abusives et cite
-            l'article de loi qui les rend illégales.
-          </p>
+          <h1 className="text-3xl font-brand font-bold">{t("scanner.title")}</h1>
+          <p className="text-slate-400 mt-1">{t("scanner.subtitle")}</p>
         </div>
         <button onClick={runDemo} className="btn-ghost">
-          <PlayCircle className="w-4 h-4" /> Lancer la démo
+          <PlayCircle className="w-4 h-4" /> {t("scanner.runDemo")}
         </button>
       </header>
 

@@ -1,0 +1,33 @@
+{
+  "code": "Code de la famille",
+  "code_ar": "قانون الأسرة",
+  "reference": "Loi n° 84-11 du 9 juin 1984 portant Code de la famille, modifiée",
+  "note": "Articles illustratifs pour la démo — à vérifier contre le texte officiel avant production.",
+  "articles": [
+    {
+      "article": "Art. 48",
+      "text": "Le divorce est la dissolution du mariage. Il intervient par la volonté de l'époux, par consentement mutuel des deux époux, ou à la demande de l'épouse dans les cas prévus par la loi.",
+      "topics": ["divorce", "dissolution du mariage", "séparation"]
+    },
+    {
+      "article": "Art. 53",
+      "text": "L'épouse peut demander le divorce (khol'â) en restituant une compensation. Elle peut aussi demander la séparation pour préjudice, défaut d'entretien, ou absence prolongée de l'époux.",
+      "topics": ["divorce", "khol'â", "préjudice", "demande de l'épouse"]
+    },
+    {
+      "article": "Art. 64",
+      "text": "La garde de l'enfant (hadhana) consiste à entretenir et éduquer l'enfant. Elle est confiée en priorité à la mère, dans l'intérêt de l'enfant.",
+      "topics": ["garde", "hadhana", "enfant", "divorce"]
+    },
+    {
+      "article": "Art. 75",
+      "text": "Le père est tenu de subvenir à l'entretien (nafaqa) de son enfant. La pension est due jusqu'à la majorité, et au-delà pour l'enfant poursuivant ses études ou la fille jusqu'à son mariage.",
+      "topics": ["pension alimentaire", "nafaqa", "entretien", "enfant"]
+    },
+    {
+      "article": "Art. 126",
+      "text": "La succession est dévolue aux héritiers conformément aux règles légales. Nul héritier ne peut être privé de sa part réservataire fixée par la loi.",
+      "topics": ["héritage", "succession", "part réservataire", "héritiers"]
+    }
+  ]
+}

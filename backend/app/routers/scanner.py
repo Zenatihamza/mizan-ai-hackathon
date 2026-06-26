@@ -4,6 +4,7 @@ Pipeline: image -> OCR -> clause segmentation -> RAG retrieval -> LLM analysis.
 Falls back to a high-quality mock for the demo so the stage demo never fails.
 """
 import re
+import unicodedata
 from typing import List, Optional
 from fastapi import APIRouter, UploadFile, File
 from pydantic import BaseModel
@@ -128,8 +129,106 @@ def _segment_clauses(text: str) -> List[tuple]:
     return clauses
 
 
+def _norm(s: str) -> str:
+    """Lowercase + strip accents so patterns match OCR text with or without accents."""
+    s = unicodedata.normalize("NFD", s)
+    return "".join(c for c in s if unicodedata.category(c) != "Mn").lower()
+
+
+# Generic red-flag patterns — let the scanner analyze ANY contract, not just the demo.
+# Each: regex (on normalized text), verdict, severity, title, explanation (fr/ar), citations, rewrite.
+_PATTERNS = [
+    {
+        "re": r"sans heures? supplementaires?|\b(4[5-9]|[5-9]\d|1\d\d)\s*heures?",
+        "verdict": "red", "severity": 88,
+        "title": "Durée du travail / heures supplémentaires",
+        "explanation": "La durée légale est de 40h/semaine et toute heure au-delà doit être majorée d'au moins 50%.",
+        "explanation_ar": "المدة القانونية هي 40 ساعة أسبوعياً، وكل ساعة إضافية يجب أن تُدفع بزيادة لا تقل عن 50%.",
+        "citations": [("Code du travail", "Art. 22", "La durée légale hebdomadaire de travail est fixée à quarante (40) heures…"),
+                      ("Code du travail", "Art. 31", "Les heures supplémentaires donnent lieu à une majoration d'au moins 50%…")],
+        "fair_rewrite": "Le salarié travaillera 40 heures par semaine ; les heures supplémentaires sont majorées d'au moins 50%.",
+    },
+    {
+        "re": r"sans preavis|sans indemnite|a tout moment.*(licenci|met fin|rompre)|met fin.*sans",
+        "verdict": "red", "severity": 92,
+        "title": "Rupture sans préavis ni motif",
+        "explanation": "L'employeur ne peut rompre le contrat sans cause réelle, procédure disciplinaire et préavis légal.",
+        "explanation_ar": "لا يحق لصاحب العمل إنهاء العقد دون سبب حقيقي وإجراء تأديبي وإشعار مسبق قانوني.",
+        "citations": [("Code du travail", "Art. 73", "Le licenciement ne peut intervenir que pour faute grave, après mise en demeure…"),
+                      ("Code du travail", "Art. 74", "Le travailleur licencié sans cause réelle a droit à une indemnité et à un préavis…")],
+        "fair_rewrite": "La rupture n'intervient que pour cause réelle, après procédure écrite et respect du préavis légal.",
+    },
+    {
+        "re": r"aucun.{0,20}cong|sans cong|pas de cong",
+        "verdict": "red", "severity": 84,
+        "title": "Suppression du congé annuel",
+        "explanation": "Le congé annuel est un droit acquis dès le premier mois ; toute clause le supprimant est nulle.",
+        "explanation_ar": "العطلة السنوية حق يُكتسب منذ الشهر الأول، وكل بند يلغيها يُعدّ باطلاً.",
+        "citations": [("Code du travail", "Art. 39", "Tout travailleur a droit à un congé annuel rémunéré…"),
+                      ("Code du travail", "Art. 40", "La durée du congé annuel ne peut être inférieure à 30 jours…")],
+        "fair_rewrite": "Le salarié bénéficie d'au moins 30 jours de congé annuel rémunéré par an.",
+    },
+    {
+        "re": r"non[- ]?concurrence",
+        "verdict": "orange", "severity": 58,
+        "title": "Clause de non-concurrence",
+        "explanation": "Une clause de non-concurrence doit être limitée dans le temps, l'espace, et compensée financièrement.",
+        "explanation_ar": "بند عدم المنافسة يجب أن يكون محدوداً في الزمان والمكان وأن يقابله تعويض مالي.",
+        "citations": [("Code civil", "Art. 110", "Le juge peut modifier les clauses abusives ou en dispenser la partie adhérente…")],
+        "fair_rewrite": "Non-concurrence limitée (durée et zone raisonnables) avec compensation financière.",
+    },
+    {
+        "re": r"renonc|exclusivement par l.?employeur|renonciation.*juge|tranche.*employeur",
+        "verdict": "red", "severity": 80,
+        "title": "Renonciation à l'accès au juge",
+        "explanation": "On ne peut pas renoncer à l'accès au juge ni confier la décision à l'autre partie. Clause abusive.",
+        "explanation_ar": "لا يمكن التنازل عن حق اللجوء إلى القضاء ولا منح القرار للطرف الآخر. هذا بند تعسفي.",
+        "citations": [("Code civil", "Art. 110", "Clauses abusives réputées non écrites…")],
+        "fair_rewrite": "Tout litige est soumis aux juridictions algériennes compétentes selon le droit commun.",
+    },
+    {
+        "re": r"non remboursable|non restituable|caution.*conserv|conserv.*caution",
+        "verdict": "red", "severity": 78,
+        "title": "Caution non restituable",
+        "explanation": "La caution doit être restituée en fin de bail, hors dégradations réelles. La retenir d'office est abusif.",
+        "explanation_ar": "يجب إرجاع الكفالة في نهاية الإيجار، باستثناء الأضرار الحقيقية. الاحتفاظ بها تلقائياً تعسّف.",
+        "citations": [("Code civil", "Art. 482", "Le preneur a droit à la restitution de la garantie en fin de bail…")],
+        "fair_rewrite": "La caution est restituée sous 30 jours après l'état des lieux de sortie, hors dégradations.",
+    },
+    {
+        "re": r"penalite|\b[2-9]\d\s*%|\b1\d\d\s*%",
+        "verdict": "orange", "severity": 55,
+        "title": "Pénalité potentiellement excessive",
+        "explanation": "Une pénalité disproportionnée peut être réduite par le juge. Vérifie le plafond légal applicable.",
+        "explanation_ar": "الغرامة المبالغ فيها يمكن أن يخفّضها القاضي. تحقّق من السقف القانوني المطبّق.",
+        "citations": [("Code civil", "Art. 110", "Le juge peut réduire une clause manifestement excessive…")],
+        "fair_rewrite": "Pénalité plafonnée à un pourcentage raisonnable, proportionnée au préjudice réel.",
+    },
+]
+
+
+def _generic_analyze_clause(idx: int, body: str) -> ClauseAnalysis:
+    """Scan any clause for red-flag patterns. Returns green if nothing matches."""
+    norm = _norm(body)
+    for p in _PATTERNS:
+        if re.search(p["re"], norm):
+            return ClauseAnalysis(
+                id=idx, text=body, verdict=p["verdict"], severity=p["severity"],
+                title=p["title"], explanation=p["explanation"],
+                explanation_ar=p["explanation_ar"],
+                citations=[Citation(code=c, article=a, excerpt=e) for (c, a, e) in p["citations"]],
+                fair_rewrite=p.get("fair_rewrite"), confidence=0.78,
+            )
+    return ClauseAnalysis(
+        id=idx, text=body, verdict="green", severity=10, title="Clause standard",
+        explanation="Aucune anomalie détectée par rapport au cadre légal courant.",
+        explanation_ar="لم يُكتشف أي خلل مقارنة بالإطار القانوني المعمول به.",
+        citations=[], fair_rewrite=None, confidence=0.6,
+    )
+
+
 def _mock_analyze_clause(idx: int, key: str, body: str) -> ClauseAnalysis:
-    """Use the demo dictionary when the clause matches; otherwise return a generic green verdict."""
+    """Use the demo dictionary for the known contract; otherwise run generic detection."""
     spec = _DEMO_ANALYSIS.get(key)
     if spec:
         citations = [
@@ -147,18 +246,7 @@ def _mock_analyze_clause(idx: int, key: str, body: str) -> ClauseAnalysis:
             fair_rewrite=spec.get("fair_rewrite"),
             confidence=0.92,
         )
-    return ClauseAnalysis(
-        id=idx,
-        text=body,
-        verdict="green",
-        severity=10,
-        title="Clause standard",
-        explanation="Aucune anomalie détectée par rapport au cadre légal courant.",
-        explanation_ar="لم يُكتشف أي خلل مقارنة بالإطار القانوني المعمول به.",
-        citations=[],
-        fair_rewrite=None,
-        confidence=0.6,
-    )
+    return _generic_analyze_clause(idx, body)
 
 
 def _llm_analyze_clause(idx: int, key: str, body: str) -> ClauseAnalysis:

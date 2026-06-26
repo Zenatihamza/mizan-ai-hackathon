@@ -1,4 +1,4 @@
-# Mizan ⚖️
+﻿# JusticIA ⚖️
 
 **Le droit algérien, accessible — en français et en arabe.**
 Hackathon Nous · Challenge 1 — Legal Access & Justice.
@@ -145,4 +145,5 @@ Swagger complet : `http://localhost:8000/docs`.
 
 ---
 
-*Mizan — parce que comprendre le droit ne devrait pas être un privilège.*
+*JusticIA — parce que comprendre le droit ne devrait pas être un privilège.*
+

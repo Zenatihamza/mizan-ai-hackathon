@@ -16,6 +16,7 @@ import {
   type Procedure,
 } from "../../lib/api";
 import { speak } from "../../lib/voice";
+import { useI18n } from "../../lib/i18n";
 
 const SUGGESTIONS = [
   "Mon propriétaire ne me rend pas la caution",
@@ -25,6 +26,7 @@ const SUGGESTIONS = [
 ];
 
 export default function GPS() {
+  const { t } = useI18n();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Procedure[]>([]);
   const [loading, setLoading] = useState(false);
@@ -51,11 +53,8 @@ export default function GPS() {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="text-3xl font-bold">GPS juridique</h1>
-        <p className="text-slate-400 mt-1">
-          Décris ton problème en français ou en darija. Mizan te dit exactement
-          où aller, quels documents emporter et combien de temps ça prend.
-        </p>
+        <h1 className="text-3xl font-brand font-bold">{t("gps.title")}</h1>
+        <p className="text-slate-400 mt-1">{t("gps.subtitle")}</p>
       </header>
 
       <div className="card p-5">

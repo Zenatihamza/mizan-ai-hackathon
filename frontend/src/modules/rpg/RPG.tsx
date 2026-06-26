@@ -12,8 +12,10 @@ import {
 } from "lucide-react";
 import * as api from "../../lib/api";
 import { speak, stopSpeaking } from "../../lib/voice";
+import { useI18n } from "../../lib/i18n";
 
 export default function RPG() {
+  const { t } = useI18n();
   const [scenarios, setScenarios] = useState<api.Scenario[]>([]);
   const [levels, setLevels] = useState<api.Level[]>([]);
   const [idx, setIdx] = useState(0);
@@ -106,13 +108,10 @@ export default function RPG() {
     <div className="space-y-6">
       <header className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <GraduationCap className="w-7 h-7 text-gold" /> Apprendre mes droits
+          <h1 className="text-3xl font-brand font-bold flex items-center gap-2">
+            <GraduationCap className="w-7 h-7 text-gold" /> {t("rpg.title")}
           </h1>
-          <p className="text-slate-400 mt-1">
-            Vis des situations réelles. Chaque décision t'apprend une règle du droit
-            algérien, expliquée à voix haute en arabe.
-          </p>
+          <p className="text-slate-400 mt-1">{t("rpg.subtitle")}</p>
         </div>
         <XPHeader
           xp={xp}

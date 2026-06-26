@@ -53,6 +53,36 @@ _INTENTS = [
         "ar": "إذا كان دخلك محدوداً، لك الحق في محامٍ مجاني عبر المساعدة القضائية. اسحب الاستمارة من مكتب المساعدة القضائية بالمجلس القضائي، وأرفق ما يثبت دخلك، وسيُعيَّن لك محامٍ.",
         "proc": "aide-juridictionnelle",
     },
+    {
+        "keys": ["divorce", "divorcer", "mariage", "epouse", "époux", "mari", "femme", "khol", "separation", "séparation"],
+        "fr": "Le divorce peut intervenir par la volonté de l'époux, par consentement mutuel, ou à la demande de l'épouse (khol'â, ou pour préjudice / défaut d'entretien). La demande se dépose au tribunal de la section des affaires familiales, qui passe d'abord par une tentative de conciliation obligatoire.",
+        "ar": "يمكن أن يقع الطلاق بإرادة الزوج، أو بالتراضي، أو بطلب من الزوجة (الخلع أو بسبب الضرر أو الإهمال). تُرفع الدعوى أمام قسم شؤون الأسرة الذي يبدأ بمحاولة صلح إلزامية.",
+        "proc": "aide-juridictionnelle",
+    },
+    {
+        "keys": ["garde", "enfant", "enfants", "hadhana", "pension", "nafaqa", "alimentaire"],
+        "fr": "La garde de l'enfant (hadhana) est confiée en priorité à la mère, dans l'intérêt de l'enfant. Le père reste tenu de payer la pension alimentaire (nafaqa) jusqu'à la majorité, et au-delà pour les études ou la fille jusqu'au mariage. La demande passe par la section des affaires familiales.",
+        "ar": "حضانة الطفل تُسند أولاً للأم بما يحقق مصلحة الطفل. ويبقى الأب ملزماً بدفع النفقة حتى بلوغ الطفل سن الرشد، وبعدها إن كان يدرس أو إلى غاية زواج البنت. تُرفع الدعوى أمام قسم شؤون الأسرة.",
+        "proc": "aide-juridictionnelle",
+    },
+    {
+        "keys": ["heritage", "héritage", "succession", "heritier", "héritier", "part", "hereditaire"],
+        "fr": "La succession est dévolue aux héritiers selon les règles légales, et nul ne peut être privé de sa part réservataire. En cas de blocage (un héritier qui occupe seul le bien, par exemple), tu peux saisir le tribunal pour le partage successoral.",
+        "ar": "تؤول التركة إلى الورثة وفق القواعد القانونية، ولا يمكن حرمان أي وارث من نصيبه المفروض. في حال وجود نزاع (كأن يستحوذ وارث على المال وحده)، يمكنك رفع دعوى قسمة التركة أمام المحكمة.",
+        "proc": "aide-juridictionnelle",
+    },
+    {
+        "keys": ["arnaque", "escroquerie", "fraude", "vol", "escroc", "trompe", "trompé", "faux"],
+        "fr": "Si tu es victime d'une escroquerie ou d'une fraude, c'est une infraction pénale. Dépose plainte au commissariat ou à la gendarmerie, ou directement auprès du Procureur de la République près le tribunal. Conserve toutes les preuves (messages, reçus, virements).",
+        "ar": "إذا كنت ضحية نصب أو احتيال، فهذه جريمة جزائية. قدّم شكوى لدى مركز الشرطة أو الدرك، أو مباشرة لدى وكيل الجمهورية لدى المحكمة. احتفظ بكل الأدلة (الرسائل، الوصولات، التحويلات).",
+        "proc": "aide-juridictionnelle",
+    },
+    {
+        "keys": ["voisin", "voisinage", "bruit", "mur", "mitoyen", "trouble"],
+        "fr": "Pour un trouble de voisinage (bruit, empiètement, mur mitoyen), commence par une mise en demeure écrite, puis la médiation à la maison de justice. Si le trouble persiste, le tribunal de proximité peut ordonner sa cessation et des dommages-intérêts.",
+        "ar": "في حالة أضرار الجوار (الضجيج، التعدّي، الحائط المشترك)، ابدأ بإعذار كتابي، ثم بالوساطة في دار العدالة. وإذا استمر الضرر، يمكن لمحكمة القرب أن تأمر بإزالته مع التعويض.",
+        "proc": "aide-juridictionnelle",
+    },
 ]
 
 _DISCLAIMER = (
@@ -93,20 +123,20 @@ def _mock_answer(message: str) -> Dict:
             "content_ar": ar + _DISCLAIMER_AR,
             "citations": citations,
         }
-    # Generic grounded fallback
+    # Generic grounded fallback — quotes the actual retrieved article so it varies per question
     if citations:
-        joined = " ; ".join(f"{c['code']} {c['article']}" for c in citations)
+        top = citations[0]
         fr = (
-            "Voici ce que dit la loi algérienne sur ta situation. "
-            f"Les textes pertinents sont : {joined}. "
-            "Décris-moi ton problème plus précisément (bail, travail, achat, licenciement…) "
-            "et je te donnerai la procédure exacte à suivre."
+            "D'après le droit algérien, voici le texte qui se rapproche le plus de ta situation. "
+            f"{top['code']} — {top['article']} : « {top['excerpt'].rstrip('. ')}. » "
+            "Précise ton cas (bail, travail, achat, famille, héritage, licenciement, voisinage…) "
+            "et je te donne la démarche exacte à suivre."
         )
     else:
         fr = (
-            "Je peux t'aider sur le bail, le travail, la consommation, le licenciement "
-            "ou l'accès à un avocat. Décris ta situation en une phrase et je t'explique "
-            "tes droits et les démarches."
+            "Je peux t'aider sur le bail, le travail, la consommation, la famille, l'héritage, "
+            "le licenciement, le voisinage ou l'accès à un avocat. Décris ta situation en une "
+            "phrase et je t'explique tes droits et les démarches."
         )
     return {
         "content": fr + _DISCLAIMER,

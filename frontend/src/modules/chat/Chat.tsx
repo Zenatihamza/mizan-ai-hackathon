@@ -10,8 +10,10 @@ import {
 } from "lucide-react";
 import * as api from "../../lib/api";
 import { speak } from "../../lib/voice";
+import { useI18n } from "../../lib/i18n";
 
 export default function Chat() {
+  const { t } = useI18n();
   const [conversations, setConversations] = useState<api.ConversationSummary[]>([]);
   const [activeId, setActiveId] = useState<number | null>(null);
   const [messages, setMessages] = useState<api.ChatMessage[]>([]);
@@ -99,10 +101,10 @@ export default function Chat() {
       {/* Sidebar */}
       <aside className="card p-3 flex flex-col min-h-0">
         <button onClick={newConversation} className="btn-primary w-full justify-center mb-3">
-          <Plus className="w-4 h-4" /> Nouvelle question
+          <Plus className="w-4 h-4" /> {t("chat.newQuestion")}
         </button>
         <div className="text-xs uppercase tracking-widest text-slate-500 px-2 mb-2">
-          Historique
+          {t("chat.history")}
         </div>
         <div className="flex-1 overflow-y-auto space-y-1 min-h-0">
           {conversations.length === 0 && (
@@ -137,11 +139,8 @@ export default function Chat() {
               <div className="w-12 h-12 rounded-xl bg-gold/10 border border-gold/40 flex items-center justify-center mb-4">
                 <Scale className="w-6 h-6 text-gold" />
               </div>
-              <h3 className="font-semibold text-lg">Pose ta question juridique</h3>
-              <p className="text-sm text-slate-500 mt-1 max-w-sm">
-                Décris ta situation en français ou en arabe. Tu reçois tes droits,
-                les articles de loi et les démarches à suivre.
-              </p>
+              <h3 className="font-semibold text-lg">{t("chat.emptyTitle")}</h3>
+              <p className="text-sm text-slate-500 mt-1 max-w-sm">{t("chat.emptySub")}</p>
               <div className="flex flex-wrap gap-2 justify-center mt-5">
                 {SUGGESTIONS.map((s) => (
                   <button
@@ -162,7 +161,7 @@ export default function Chat() {
 
           {sending && (
             <div className="flex items-center gap-2 text-slate-500 text-sm">
-              <Loader2 className="w-4 h-4 animate-spin" /> Mizan réfléchit…
+              <Loader2 className="w-4 h-4 animate-spin" /> {t("chat.thinking")}
             </div>
           )}
         </div>
@@ -179,7 +178,7 @@ export default function Chat() {
                 }
               }}
               rows={1}
-              placeholder="Écris ta question…"
+              placeholder={t("chat.placeholder")}
               className="bg-transparent outline-none flex-1 resize-none text-sm py-1 max-h-32"
             />
             <button

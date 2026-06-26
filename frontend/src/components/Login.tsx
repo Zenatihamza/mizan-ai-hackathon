@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
-import { Scale, Loader2, Mail, Lock, User as UserIcon } from "lucide-react";
+import { Scale, Loader2, Mail, Lock, User as UserIcon, Languages } from "lucide-react";
 import { useAuth } from "../lib/auth";
+import { useI18n } from "../lib/i18n";
 
 export default function Login() {
   const { user, login, register } = useAuth();
+  const { t, lang, toggle } = useI18n();
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as any)?.from || "/";
@@ -39,14 +41,24 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-md">
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={toggle}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-700 hover:border-gold/50 text-sm font-medium transition"
+          >
+            <Languages className="w-4 h-4 text-gold" />
+            {lang === "fr" ? "العربية" : "Français"}
+          </button>
+        </div>
+
         <div className="flex flex-col items-center mb-8">
           <div className="w-14 h-14 rounded-2xl bg-gold/10 border border-gold/40 flex items-center justify-center mb-3">
             <Scale className="w-7 h-7 text-gold" />
           </div>
-          <h1 className="text-2xl font-bold">Mizan</h1>
-          <p className="text-sm text-slate-500 mt-1">
-            ميزان · le droit algérien, accessible
-          </p>
+          <h1 className="text-3xl font-brand font-bold">
+            Justic<span className="text-gold">IA</span>
+          </h1>
+          <p className="text-sm text-slate-500 mt-1">{t("login.subtitle")}</p>
         </div>
 
         <div className="card p-6">
@@ -57,7 +69,7 @@ export default function Login() {
                 mode === "login" ? "bg-slate-800 text-white" : "text-slate-400"
               }`}
             >
-              Connexion
+              {t("login.tabLogin")}
             </button>
             <button
               onClick={() => setMode("register")}
@@ -65,34 +77,16 @@ export default function Login() {
                 mode === "register" ? "bg-slate-800 text-white" : "text-slate-400"
               }`}
             >
-              Créer un compte
+              {t("login.tabRegister")}
             </button>
           </div>
 
           <form onSubmit={submit} className="space-y-4">
             {mode === "register" && (
-              <Field
-                icon={UserIcon}
-                placeholder="Nom complet"
-                value={name}
-                onChange={setName}
-                type="text"
-              />
+              <Field icon={UserIcon} placeholder={t("login.name")} value={name} onChange={setName} type="text" />
             )}
-            <Field
-              icon={Mail}
-              placeholder="Email"
-              value={email}
-              onChange={setEmail}
-              type="email"
-            />
-            <Field
-              icon={Lock}
-              placeholder="Mot de passe"
-              value={password}
-              onChange={setPassword}
-              type="password"
-            />
+            <Field icon={Mail} placeholder={t("login.email")} value={email} onChange={setEmail} type="email" />
+            <Field icon={Lock} placeholder={t("login.password")} value={password} onChange={setPassword} type="password" />
 
             {error && <div className="text-rose-400 text-sm">{error}</div>}
 
@@ -100,17 +94,15 @@ export default function Login() {
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : mode === "login" ? (
-                "Se connecter"
+                t("login.doLogin")
               ) : (
-                "Créer mon compte"
+                t("login.doRegister")
               )}
             </button>
           </form>
         </div>
 
-        <p className="text-center text-xs text-slate-600 mt-6">
-          Information juridique — ne remplace pas la consultation d'un avocat.
-        </p>
+        <p className="text-center text-xs text-slate-600 mt-6">{t("common.disclaimer")}</p>
       </div>
     </div>
   );
