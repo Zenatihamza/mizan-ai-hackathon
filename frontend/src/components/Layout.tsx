@@ -7,6 +7,8 @@ import {
   Gamepad2,
   Home,
   MessageCircle,
+  BookOpen,
+  Siren,
   LogOut,
   Languages,
   User as UserIcon,
@@ -20,6 +22,7 @@ const tabs = [
   { to: "/scanner", key: "nav.scanner", icon: ScanLine },
   { to: "/gps", key: "nav.gps", icon: MapPin },
   { to: "/rpg", key: "nav.rpg", icon: Gamepad2 },
+  { to: "/booklet", key: "nav.booklet", icon: BookOpen },
 ];
 
 export default function Layout() {
@@ -69,6 +72,20 @@ export default function Layout() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <NavLink
+              to="/emergency"
+              className={({ isActive }) =>
+                `flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-semibold transition border ${
+                  isActive
+                    ? "bg-rose-500/20 border-rose-500/60 text-rose-200"
+                    : "bg-rose-500/10 border-rose-500/40 text-rose-300 hover:bg-rose-500/20"
+                }`
+              }
+              title={t("nav.emergency")}
+            >
+              <Siren className="w-4 h-4" />
+              <span className="hidden sm:block">{t("nav.emergency")}</span>
+            </NavLink>
             <button
               onClick={toggle}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-700 hover:border-gold/50 text-sm font-medium transition"
@@ -116,7 +133,7 @@ export default function Layout() {
       </main>
 
       <nav className="md:hidden sticky bottom-0 border-t border-slate-800 bg-slate-950/95 backdrop-blur z-20">
-        <div className="grid grid-cols-5">
+        <div className="grid grid-cols-6">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const active = tab.exact ? pathname === tab.to : pathname.startsWith(tab.to);

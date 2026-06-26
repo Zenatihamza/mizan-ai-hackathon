@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import FRONTEND_ORIGIN
 from app.database import init_db
-from app.routers import scanner, gps, rpg, auth, chat
+from app.routers import scanner, gps, rpg, auth, chat, emergency, booklet
 
 app = FastAPI(
     title="Mizan",
@@ -30,6 +30,8 @@ app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(scanner.router, prefix="/api/scanner", tags=["scanner"])
 app.include_router(gps.router, prefix="/api/gps", tags=["gps"])
 app.include_router(rpg.router, prefix="/api/rpg", tags=["rpg"])
+app.include_router(emergency.router, prefix="/api/emergency", tags=["emergency"])
+app.include_router(booklet.router, prefix="/api/booklet", tags=["booklet"])
 
 
 @app.get("/")

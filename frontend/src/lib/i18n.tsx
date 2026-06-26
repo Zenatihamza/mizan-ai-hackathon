@@ -20,6 +20,8 @@ const DICT: Dict = {
   "nav.scanner": { fr: "Scanner", ar: "الماسح" },
   "nav.gps": { fr: "Démarches", ar: "الإجراءات" },
   "nav.rpg": { fr: "Apprendre", ar: "تعلّم" },
+  "nav.booklet": { fr: "Livret", ar: "الكُتيّب" },
+  "nav.emergency": { fr: "Urgence", ar: "طوارئ" },
 
   // Common
   "common.logout": { fr: "Déconnexion", ar: "تسجيل الخروج" },
@@ -76,6 +78,18 @@ const DICT: Dict = {
     ar: "عش مواقف حقيقية وتعلّم القانون الجزائري، مشروحاً صوتياً بالعربية.",
   },
   "home.rpg.cta": { fr: "Commencer", ar: "ابدأ" },
+  "home.emergency.title": { fr: "Mode urgence", ar: "وضع الطوارئ" },
+  "home.emergency.sub": {
+    fr: "Un problème juridique se produit maintenant ? Reçois immédiatement tes droits, les pièges à éviter et qui appeler.",
+    ar: "مشكلة قانونية تحدث الآن؟ احصل فوراً على حقوقك، الأخطاء التي تتجنّبها، ومن تتصل به.",
+  },
+  "home.emergency.cta": { fr: "Ouvrir le mode urgence", ar: "افتح وضع الطوارئ" },
+  "home.booklet.title": { fr: "Livret des lois", ar: "كُتيّب القوانين" },
+  "home.booklet.sub": {
+    fr: "Tous les articles du droit algérien utilisés par l'app, à consulter et rechercher librement.",
+    ar: "كل المواد القانونية الجزائرية المستعملة في التطبيق، للاطّلاع والبحث بحرّية.",
+  },
+  "home.booklet.cta": { fr: "Consulter le livret", ar: "تصفّح الكُتيّب" },
   "home.sourced.title": { fr: "Chaque réponse est sourcée", ar: "كل إجابة موثّقة" },
   "home.sourced.text": {
     fr: "JusticIA cite l'article de loi qui justifie chaque réponse, et t'oriente vers l'aide juridictionnelle en cas de doute.",

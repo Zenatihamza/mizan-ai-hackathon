@@ -1,0 +1,96 @@
+{
+  "situations": [
+    {
+      "id": "police",
+      "icon": "shield",
+      "label": { "fr": "Contrôle ou arrestation par la police", "ar": "توقيف أو إيقاف من طرف الشرطة" },
+      "rights": [
+        { "fr": "Tu as le droit de connaître le motif de ton interpellation.", "ar": "لك الحق في معرفة سبب توقيفك." },
+        { "fr": "La garde à vue est limitée dans le temps et doit être notifiée au procureur.", "ar": "التوقيف للنظر محدّد بمدة قانونية ويجب إخطار وكيل الجمهورية به." },
+        { "fr": "Tu as droit à un examen médical et à contacter ta famille.", "ar": "لك الحق في فحص طبي وفي الاتصال بعائلتك." }
+      ],
+      "donts": [
+        { "fr": "Ne signe aucun procès-verbal que tu n'as pas lu et compris.", "ar": "لا توقّع أي محضر لم تقرأه وتفهمه." },
+        { "fr": "Ne résiste pas physiquement, même si le contrôle te semble injuste.", "ar": "لا تقاوم جسدياً حتى لو بدا لك التوقيف غير عادل." },
+        { "fr": "N'avoue pas des faits sous pression sans avocat.", "ar": "لا تعترف بأي وقائع تحت الضغط دون محامٍ." }
+      ],
+      "documents": [
+        { "fr": "Note l'heure, le lieu et les matricules des agents.", "ar": "سجّل الساعة والمكان وأرقام تعريف الأعوان." },
+        { "fr": "Garde toute convocation ou document remis.", "ar": "احتفظ بأي استدعاء أو وثيقة سُلّمت لك." }
+      ],
+      "where": { "fr": "Demande l'assistance d'un avocat ; sinon, le Bureau d'aide juridictionnelle de la Cour.", "ar": "اطلب مساعدة محامٍ، وإلا فاللجوء إلى مكتب المساعدة القضائية بالمجلس." },
+      "authorities": [
+        { "name": { "fr": "Police (secours)", "ar": "الشرطة (النجدة)" }, "phone": "17" },
+        { "name": { "fr": "Gendarmerie nationale", "ar": "الدرك الوطني" }, "phone": "1055" }
+      ]
+    },
+    {
+      "id": "dismissal",
+      "icon": "briefcase",
+      "label": { "fr": "Licenciement abusif", "ar": "الطرد التعسفي من العمل" },
+      "rights": [
+        { "fr": "Un licenciement sans cause réelle ni procédure ouvre droit à réintégration ou indemnité.", "ar": "الطرد دون سبب حقيقي ودون إجراء يمنح الحق في إعادة الإدماج أو في تعويض." },
+        { "fr": "Tu as droit à un préavis et au paiement de tes congés non pris.", "ar": "لك الحق في إشعار مسبق وفي دفع العطل غير المستهلكة." }
+      ],
+      "donts": [
+        { "fr": "Ne signe pas de démission « volontaire » qu'on te présente à la place du licenciement.", "ar": "لا توقّع استقالة «طوعية» تُقدَّم لك بدل الطرد." },
+        { "fr": "Ne quitte pas les lieux sans demander un écrit motivant la rupture.", "ar": "لا تغادر دون طلب وثيقة مكتوبة تبرّر إنهاء العقد." }
+      ],
+      "documents": [
+        { "fr": "Contrat de travail, bulletins de salaire, badge/attestation de travail.", "ar": "عقد العمل، كشوف الراتب، شهادة العمل." },
+        { "fr": "Tout écrit ou témoin de la rupture.", "ar": "أي وثيقة مكتوبة أو شاهد على إنهاء العقد." }
+      ],
+      "where": { "fr": "Inspection du travail de ta wilaya (gratuit), puis Tribunal section sociale.", "ar": "مفتشية العمل لولايتك (مجاناً)، ثم المحكمة في القسم الاجتماعي." },
+      "authorities": [
+        { "name": { "fr": "Inspection générale du travail", "ar": "المفتشية العامة للعمل" }, "phone": "—" }
+      ]
+    },
+    {
+      "id": "eviction",
+      "icon": "home",
+      "label": { "fr": "Expulsion du logement", "ar": "الطرد من السكن" },
+      "rights": [
+        { "fr": "Tant que ton bail court, tu as droit à la jouissance paisible du logement.", "ar": "ما دام عقد إيجارك سارياً، لك الحق في الانتفاع الهادئ بالسكن." },
+        { "fr": "Seule une décision de justice permet une expulsion. Le propriétaire ne peut pas te chasser lui-même.", "ar": "وحده حكم قضائي يسمح بالطرد. لا يحق للمالك طردك بنفسه." }
+      ],
+      "donts": [
+        { "fr": "Ne quitte pas les lieux sous la menace seule, sans jugement.", "ar": "لا تغادر تحت التهديد وحده، دون حكم قضائي." },
+        { "fr": "Ne laisse pas changer la serrure sans constat : c'est une voie de fait.", "ar": "لا تترك القفل يُغيَّر دون محضر: فهذا اعتداء مادي." }
+      ],
+      "documents": [
+        { "fr": "Contrat de bail, quittances de loyer, état des lieux.", "ar": "عقد الإيجار، وصولات الكراء، محضر المعاينة." },
+        { "fr": "Photos et témoins de toute tentative d'expulsion.", "ar": "صور وشهود على أي محاولة طرد." }
+      ],
+      "where": { "fr": "Maison de justice (médiation), puis Tribunal de proximité du lieu du bien.", "ar": "دار العدالة (الوساطة)، ثم محكمة القرب لمكان العقار." },
+      "authorities": [
+        { "name": { "fr": "Police (secours)", "ar": "الشرطة (النجدة)" }, "phone": "17" }
+      ]
+    },
+    {
+      "id": "fraud",
+      "icon": "alert",
+      "label": { "fr": "Arnaque / fraude commerciale", "ar": "نصب أو احتيال تجاري" },
+      "rights": [
+        { "fr": "L'escroquerie est une infraction pénale : tu peux porter plainte.", "ar": "النصب جريمة جزائية: يمكنك تقديم شكوى." },
+        { "fr": "Pour un produit défectueux, une clause « pas de remboursement » est nulle.", "ar": "بالنسبة لمنتوج معيب، شرط «لا استرجاع للمال» باطل." }
+      ],
+      "donts": [
+        { "fr": "Ne verse pas d'argent supplémentaire « pour débloquer » la situation.", "ar": "لا تدفع أي مبلغ إضافي «لفك» الوضعية." },
+        { "fr": "Ne supprime aucune preuve (messages, captures, reçus).", "ar": "لا تحذف أي دليل (رسائل، صور، وصولات)." }
+      ],
+      "documents": [
+        { "fr": "Factures, reçus, captures d'écran, échanges écrits, preuves de virement.", "ar": "فواتير، وصولات، صور الشاشة، المراسلات، إثباتات التحويل." }
+      ],
+      "where": { "fr": "Commissariat ou gendarmerie ; Direction du Commerce (DCP) pour un commerçant.", "ar": "مركز الشرطة أو الدرك؛ مديرية التجارة بالنسبة للتاجر." },
+      "authorities": [
+        { "name": { "fr": "Police (secours)", "ar": "الشرطة (النجدة)" }, "phone": "17" },
+        { "name": { "fr": "Gendarmerie nationale", "ar": "الدرك الوطني" }, "phone": "1055" }
+      ]
+    }
+  ],
+  "questions": [
+    { "id": "what", "fr": "Que s'est-il passé ?", "ar": "ماذا حدث؟" },
+    { "id": "evidence", "fr": "As-tu des documents ou des preuves ?", "ar": "هل لديك وثائق أو أدلة؟" },
+    { "id": "when", "fr": "Quand est-ce arrivé ?", "ar": "متى حدث ذلك؟" }
+  ]
+}

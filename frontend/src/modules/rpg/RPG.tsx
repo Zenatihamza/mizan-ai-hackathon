@@ -288,7 +288,7 @@ function XPHeader({
           <div className="text-sm font-semibold leading-none">{currentLevel?.name || "—"}</div>
           <div className="h-1.5 mt-1.5 bg-slate-800 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-gold to-amber-200 transition-all"
+              className="h-full bg-gold transition-all"
               style={{ width: `${pct}%` }}
             />
           </div>

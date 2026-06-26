@@ -300,6 +300,11 @@ function ClauseCard({ clause }: { clause: import("../../lib/api").ClauseAnalysis
             "{clause.text}"
           </blockquote>
           <p className="mt-3 text-sm text-slate-200">{clause.explanation}</p>
+          {clause.explanation_ar && (
+            <p className="mt-1.5 text-sm text-slate-400 leading-relaxed" dir="rtl">
+              {clause.explanation_ar}
+            </p>
+          )}
 
           {clause.citations.length > 0 && (
             <div className="mt-4 space-y-2">

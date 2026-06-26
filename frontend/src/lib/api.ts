@@ -210,6 +210,50 @@ export function saveProgress(xp: number, completed: string[]): Promise<Progress>
   });
 }
 
+// ---------- Emergency ----------
+export interface Bilingual {
+  fr: string;
+  ar: string;
+}
+export interface Authority {
+  name: Bilingual;
+  phone: string;
+}
+export interface EmergencySituation {
+  id: string;
+  icon: string;
+  label: Bilingual;
+  rights: Bilingual[];
+  donts: Bilingual[];
+  documents: Bilingual[];
+  where: Bilingual;
+  authorities: Authority[];
+}
+export interface EmergencyData {
+  situations: EmergencySituation[];
+  questions: { id: string; fr: string; ar: string }[];
+}
+export function getEmergencyData(): Promise<EmergencyData> {
+  return jsonFetch("/emergency/situations");
+}
+
+// ---------- Booklet ----------
+export interface BookletArticle {
+  article: string;
+  text: string;
+  topics: string[];
+}
+export interface BookletCode {
+  code: string;
+  code_ar: string | null;
+  reference: string | null;
+  article_count: number;
+  articles: BookletArticle[];
+}
+export function getBooklet(): Promise<BookletCode[]> {
+  return jsonFetch("/booklet/codes");
+}
+
 // ---------- Chat ----------
 export function listConversations(): Promise<ConversationSummary[]> {
   return jsonFetch("/chat/conversations");
