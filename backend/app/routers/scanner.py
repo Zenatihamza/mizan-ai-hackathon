@@ -28,6 +28,7 @@ class ClauseAnalysis(BaseModel):
     severity: int  # 0-100
     title: str
     explanation: str
+    explanation_ar: Optional[str] = None  # Arabic for voice playback
     citations: List[Citation]
     fair_rewrite: Optional[str] = None
     confidence: float  # 0..1
@@ -51,6 +52,7 @@ _DEMO_ANALYSIS = {
         "severity": 90,
         "title": "Heures de travail illégales — pas d'heures supplémentaires payées",
         "explanation": "60h/semaine dépasse largement la limite légale de 40h, et toute heure au-delà DOIT être majorée d'au moins 50%.",
+        "explanation_ar": "ستون ساعة في الأسبوع تتجاوز بكثير الحد القانوني وهو 40 ساعة، وكل ساعة إضافية يجب أن تُدفع بزيادة لا تقل عن 50%.",
         "citations": [
             ("Code du travail", "Art. 22", "La durée légale hebdomadaire de travail est fixée à quarante (40) heures…"),
             ("Code du travail", "Art. 31", "Les heures supplémentaires donnent lieu à une majoration qui ne peut être inférieure à 50%…"),
@@ -62,6 +64,7 @@ _DEMO_ANALYSIS = {
         "severity": 85,
         "title": "Suppression du congé annuel — interdit",
         "explanation": "Le congé annuel est un droit légal acquis dès le premier mois, pas après un an. Toute clause y dérogeant est nulle.",
+        "explanation_ar": "العطلة السنوية حق قانوني يُكتسب منذ الشهر الأول، وليس بعد سنة. كل بند يخالف ذلك يُعدّ باطلاً.",
         "citations": [
             ("Code du travail", "Art. 39", "Tout travailleur a droit à un congé annuel rémunéré payé par l'employeur…"),
             ("Code du travail", "Art. 40", "La durée du congé annuel ne peut être inférieure à trente (30) jours calendaires…"),
@@ -73,6 +76,7 @@ _DEMO_ANALYSIS = {
         "severity": 95,
         "title": "Licenciement sans préavis ni motif — totalement illégal",
         "explanation": "L'employeur ne peut rompre le contrat sans procédure disciplinaire, sans motif réel et sans préavis légal. Cette clause est nulle de plein droit.",
+        "explanation_ar": "لا يحق لصاحب العمل إنهاء العقد دون إجراء تأديبي ودون سبب حقيقي ودون إشعار مسبق قانوني. هذا البند باطل بقوة القانون.",
         "citations": [
             ("Code du travail", "Art. 73", "Le licenciement à caractère disciplinaire ne peut intervenir que pour faute grave, après mise en demeure…"),
             ("Code du travail", "Art. 74", "Le travailleur licencié sans cause réelle et sérieuse a droit à une indemnité de licenciement et à un préavis…"),
@@ -84,6 +88,7 @@ _DEMO_ANALYSIS = {
         "severity": 60,
         "title": "Clause de non-concurrence excessive",
         "explanation": "Une clause de non-concurrence de 5 ans sur tout le territoire national est disproportionnée. Elle doit être limitée dans le temps, l'espace et compensée financièrement.",
+        "explanation_ar": "بند عدم المنافسة لمدة خمس سنوات على كامل التراب الوطني مبالغ فيه. يجب أن يكون محدوداً في الزمن والمكان وأن يقابله تعويض مالي.",
         "citations": [
             ("Code civil", "Art. 106", "Le contrat fait la loi des parties… Il doit être exécuté de bonne foi."),
             ("Code civil", "Art. 110", "…le juge peut modifier les clauses abusives ou en dispenser cette partie…"),
@@ -95,6 +100,7 @@ _DEMO_ANALYSIS = {
         "severity": 80,
         "title": "Renonciation au juge — clause nulle",
         "explanation": "On ne peut pas légalement renoncer à l'accès au juge. C'est une clause abusive caractérisée.",
+        "explanation_ar": "لا يمكن قانوناً التنازل عن حق اللجوء إلى القضاء. هذا بند تعسفي واضح.",
         "citations": [
             ("Code civil", "Art. 110", "…clauses abusives… réputées non écrites…"),
         ],
@@ -136,6 +142,7 @@ def _mock_analyze_clause(idx: int, key: str, body: str) -> ClauseAnalysis:
             severity=spec["severity"],
             title=spec["title"],
             explanation=spec["explanation"],
+            explanation_ar=spec.get("explanation_ar"),
             citations=citations,
             fair_rewrite=spec.get("fair_rewrite"),
             confidence=0.92,
@@ -147,6 +154,7 @@ def _mock_analyze_clause(idx: int, key: str, body: str) -> ClauseAnalysis:
         severity=10,
         title="Clause standard",
         explanation="Aucune anomalie détectée par rapport au cadre légal courant.",
+        explanation_ar="لم يُكتشف أي خلل مقارنة بالإطار القانوني المعمول به.",
         citations=[],
         fair_rewrite=None,
         confidence=0.6,

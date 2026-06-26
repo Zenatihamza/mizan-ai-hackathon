@@ -1,14 +1,16 @@
-# Mizan AI ⚖️
+# Mizan ⚖️
 
-**Une couche de compréhension juridique pour l'Algérie.**
+**Le droit algérien, accessible — en français et en arabe.**
 Hackathon Nous · Challenge 1 — Legal Access & Justice.
 
-Trois modules dans une seule plateforme :
-- **Scanner** — analyse un contrat photo, détecte les clauses abusives, cite l'article de loi, propose une réécriture équitable.
-- **GPS juridique** — décris ton problème en langage naturel, reçois la procédure exacte (où, quoi, combien de temps, combien ça coûte).
-- **Simulateur** — un RPG qui te fait vivre des situations légales réelles et t'apprend tes droits.
+Une plateforme avec comptes utilisateurs et 4 modules :
 
-Couche transversale : **voix en darija** sur chaque module via la Web Speech API du navigateur.
+- **Assistant** — un chatbot juridique avec **historique** : pose ta question, reçois tes droits, les articles de loi et les démarches.
+- **Scanner** — analyse un contrat photo, détecte les clauses abusives/illégales, cite l'article, propose une réécriture équitable.
+- **Démarches (GPS)** — décris ton problème, reçois la procédure exacte (où, quoi, combien de temps, combien ça coûte).
+- **Apprendre** — un simulateur éducatif qui fait vivre des situations légales réelles et enseigne le droit, **avec progression sauvegardée**.
+
+Couche transversale : **explication vocale en arabe** sur chaque module (scanner, assistant, simulateur) via la Web Speech API du navigateur.
 
 ---
 
@@ -16,12 +18,19 @@ Couche transversale : **voix en darija** sur chaque module via la Web Speech API
 
 ```
 mizan-ai/
-├── frontend/         # React + Vite + TypeScript + Tailwind
-└── backend/          # FastAPI + Tesseract OCR + ChromaDB RAG + Ollama
+├── frontend/   # React + Vite + TypeScript + Tailwind
+└── backend/    # FastAPI + SQLite (SQLAlchemy) + OCR + RAG + LLM
 ```
 
-- **Frontend** sur `http://localhost:5173`
-- **Backend** sur `http://localhost:8000` (proxifié par Vite sous `/api`)
+- **Frontend** : `http://localhost:5173`
+- **Backend** : `http://localhost:8000` (proxifié par Vite sous `/api`)
+- **Base de données** : SQLite (`backend/app/data/mizan.db`, créée automatiquement)
+
+### Comptes & sécurité
+- Inscription / connexion par email + mot de passe.
+- Mots de passe hashés (PBKDF2, stdlib — aucune dépendance native).
+- Sessions par token JWT (7 jours), stocké côté navigateur.
+- Chaque utilisateur a ses propres conversations et sa progression.
 
 ---
 
@@ -29,148 +38,111 @@ mizan-ai/
 
 | Outil | Version | Pourquoi |
 |-------|---------|----------|
-| Node.js | ≥ 18 | Frontend |
 | Python | ≥ 3.10 | Backend |
-| Tesseract OCR | ≥ 5 | OCR arabe + français |
-| Ollama *(optionnel)* | dernier | LLM local gratuit |
+| Node.js | ≥ 18 | Frontend |
+| Tesseract OCR | ≥ 5 | OCR arabe + français *(optionnel)* |
+| Ollama | dernier | LLM local gratuit *(optionnel)* |
 
-### 1. Installer Node.js
-
-Télécharge l'installeur LTS depuis [nodejs.org](https://nodejs.org). Vérifie :
-
-```bash
-node --version
-npm --version
-```
-
-### 2. Installer Tesseract (Windows)
-
-1. Télécharge l'installeur depuis [github.com/UB-Mannheim/tesseract](https://github.com/UB-Mannheim/tesseract/wiki).
-2. **Coche les langues `Arabic` et `French`** pendant l'installation.
-3. Note le chemin (par défaut `C:\Program Files\Tesseract-OCR\tesseract.exe`).
-4. Mets ce chemin dans `backend/.env`.
-
-> **Sans Tesseract** : l'app marche quand même — l'OCR retombe sur un contrat de démo pré-cuisiné. Tu peux faire toute la démo Scanner sans avoir installé Tesseract.
-
-### 3. Installer Ollama *(optionnel — recommandé pour le mode "vrai LLM")*
-
-```bash
-# Télécharge depuis https://ollama.com/download
-# Puis :
-ollama pull llama3.1:8b
-ollama serve   # tourne en arrière-plan
-```
-
-> **Sans Ollama** : laisse `LLM_BACKEND=mock` dans `.env`. La démo Scanner utilise une analyse experte pré-calculée pour le contrat de démo. **Recommandé pour la présentation jury** — zéro risque que le modèle crashe sur scène.
+Tesseract et Ollama sont **optionnels** : sans eux, l'app marche en mode démo (OCR → contrat pré-cuisiné, réponses calibrées avec vraies citations). Voir plus bas.
 
 ---
 
 ## Lancer le projet
 
-### Backend
+### Backend (terminal 1)
 
-```bash
+```powershell
 cd backend
 python -m venv venv
-venv\Scripts\activate            # PowerShell : venv\Scripts\Activate.ps1
+venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-copy .env.example .env           # puis édite .env si besoin
+copy .env.example .env
 uvicorn app.main:app --reload --port 8000
 ```
 
-Test rapide : ouvre `http://localhost:8000/api/health` → doit renvoyer `{"status":"ok",...}`.
+Test : `http://localhost:8000/api/health` → `{"status":"ok",...}`.
+La base de données et les tables sont créées automatiquement au démarrage.
 
-### Frontend
+### Frontend (terminal 2)
 
-Dans un **second terminal** :
-
-```bash
+```powershell
 cd frontend
 npm install
 npm run dev
 ```
 
-Ouvre `http://localhost:5173`.
+Ouvre `http://localhost:5173` → crée un compte → tu arrives sur l'accueil.
 
 ---
 
 ## Modes de fonctionnement
 
-Configurés via `backend/.env` :
+`backend/.env` :
 
 | Variable | Valeurs | Effet |
 |---|---|---|
-| `LLM_BACKEND` | `mock` *(défaut)* / `ollama` | Source du raisonnement IA |
-| `OLLAMA_MODEL` | `llama3.1:8b` *(défaut)*, `mistral`, etc. | Modèle utilisé si Ollama actif |
-| `TESSERACT_PATH` | chemin absolu | Chemin de l'exécutable Tesseract |
+| `LLM_BACKEND` | `mock` *(défaut)* / `ollama` | Source du raisonnement |
+| `OLLAMA_MODEL` | `llama3.1:8b`, `mistral`… | Modèle si Ollama actif |
+| `TESSERACT_PATH` | chemin absolu | Exécutable Tesseract |
+| `DATABASE_URL` | `sqlite:///./app/data/mizan.db` | Base de données |
+| `JWT_SECRET` | chaîne secrète | Signature des tokens — **à changer** |
 
-**Pour la démo jury :** garde `LLM_BACKEND=mock`. Les réponses sur le contrat de démo sont soigneusement calibrées avec de vraies citations d'articles, zéro risque de hallucination en direct.
+**Pour la démo jury : garde `LLM_BACKEND=mock`.** Les réponses (scanner + assistant) sont calibrées avec de vraies citations d'articles, zéro risque d'hallucination en direct.
+
+### Activer le vrai LLM (optionnel)
+```bash
+# https://ollama.com/download
+ollama pull llama3.1:8b
+ollama serve
+# puis dans .env : LLM_BACKEND=ollama
+```
 
 ---
 
-## Endpoints API
+## La voix arabe
+
+Implémentée côté navigateur via la **Web Speech API** — gratuit, sans clé API. Le texte lu est en **arabe** (et non du français lu par une voix arabe).
+
+> ⚠️ Les navigateurs n'ont pas de voix « darija » dédiée. On lit de l'arabe standard (compréhensible par tous). Pour la meilleure qualité sur Windows :
+> `Paramètres → Heure & langue → Voix → Ajouter des voix → Arabe`. Chrome/Edge ont de meilleures voix arabes que Firefox.
+
+---
+
+## Endpoints API (extrait)
 
 | Méthode | Chemin | Rôle |
 |---|---|---|
-| `GET`  | `/api/health` | Ping + état du LLM |
-| `POST` | `/api/scanner/analyze` | Upload image → analyse complète (multipart) |
-| `GET`  | `/api/scanner/demo` | Renvoie l'analyse démo sans upload |
-| `POST` | `/api/gps/search` | Body `{query}` → procédures triées |
-| `GET`  | `/api/gps/all` | Liste toutes les procédures |
-| `GET`  | `/api/rpg/scenarios` | Liste les scénarios du jeu |
-| `POST` | `/api/rpg/answer` | Body `{scenario_id, choice_id}` → feedback + XP |
-| `GET`  | `/api/rpg/levels` | Liste les niveaux et seuils XP |
+| `POST` | `/api/auth/register` · `/api/auth/login` | Créer un compte / se connecter |
+| `GET`  | `/api/auth/me` | Utilisateur courant |
+| `POST` | `/api/chat/message` | Envoyer un message (crée la conversation si besoin) |
+| `GET`  | `/api/chat/conversations` | Historique des conversations |
+| `POST` | `/api/scanner/analyze` · `GET /api/scanner/demo` | Analyse de contrat |
+| `POST` | `/api/gps/search` | Procédures pertinentes |
+| `GET`  | `/api/rpg/scenarios` · `POST /api/rpg/answer` | Simulateur |
+| `GET/POST` | `/api/rpg/progress` | Charger / sauver la progression |
 
-Docs auto Swagger : `http://localhost:8000/docs`.
-
----
-
-## Données légales
-
-Le corpus se trouve dans `backend/app/data/corpus/` — un fichier JSON par code :
-
-- `labor_code.json` — Code du travail (Loi 90-11)
-- `civil_code.json` — Code civil (Ordonnance 75-58)
-- `consumer_code.json` — Protection du consommateur (Loi 09-03)
-
-**⚠️ Important** : les articles seedés sont **illustratifs pour la démo**. Vérifie-les contre les textes officiels avant tout usage en production. Ajouter un nouvel article = un nouvel objet dans le JSON, l'index RAG le recharge au prochain démarrage.
-
-Données démo :
-- `data/procedures.json` — 5 procédures GPS
-- `data/scenarios.json` — 4 scénarios + 4 niveaux RPG
+Swagger complet : `http://localhost:8000/docs`.
 
 ---
 
-## La voix darija
+## Données
 
-Implémentée 100% côté navigateur via la **Web Speech API** — gratuit, aucune clé API.
+- `backend/app/data/corpus/` — articles de loi (travail, civil, consommation)
+- `backend/app/data/procedures.json` — démarches GPS
+- `backend/app/data/scenarios.json` — scénarios du simulateur (FR + AR + leçons)
 
-**Pour une meilleure qualité de voix arabe sur Windows :**
-`Paramètres → Heure & langue → Voix → Ajouter des voix → Arabe`.
-
-Chrome et Edge ont de meilleures voix arabes intégrées que Firefox.
+**⚠️ Les articles seedés sont illustratifs pour la démo.** Vérifie-les contre les textes officiels ([joradp.dz](https://www.joradp.dz)) avant tout usage réel.
 
 ---
 
 ## Script de démo (5 min)
 
-1. **0:00–0:30** — Hook : "Karim, ouvrier à Djelfa, signe un contrat qu'il ne comprend pas."
-2. **0:30–1:30** — Onglet **Scanner** → "Lancer la démo" → score 33/100 + clauses rouges visibles instantanément.
-3. **1:30–2:30** — Cliquer une clause rouge → citations d'articles + réécriture équitable. **Appuyer sur Volume2** → la darija parle.
-4. **2:30–3:30** — Onglet **GPS** → tape "mon patron refuse de payer les heures sup" → la procédure complète apparaît.
-5. **3:30–4:30** — Onglet **Simulateur** → 1 scénario complet, montrer XP qui monte et la barre de niveau.
-6. **4:30–5:00** — Slide finale : RAG ancré dans les codes, escalade vers l'aide juridictionnelle quand l'IA n'est pas sûre, et : *"on informe, on ne remplace pas un avocat."*
+1. **Compte** — crée un compte en direct (montre que c'est une vraie app multi-utilisateurs).
+2. **Assistant** — tape « mon propriétaire garde ma caution » → réponse + article cité + bouton 🔊 arabe. Montre l'historique à gauche.
+3. **Scanner** — onglet Scanner → « Lancer la démo » → score bas + clauses rouges → clique une clause → citation + réécriture + 🔊 arabe.
+4. **Apprendre** — 1 scénario → bonne réponse → la leçon s'affiche et se lit en arabe → l'XP monte (progression sauvegardée sur le compte).
+5. **Clôture** — « chaque réponse cite la loi, escalade vers l'aide juridictionnelle en cas de doute, et informe sans remplacer un avocat. »
 
 ---
 
-## Pour aller plus loin (post-hackathon)
-
-- Brancher un OCR plus robuste pour l'arabe manuscrit (PaddleOCR, Google Vision)
-- Vrai TTS darija de qualité production (Coqui, ElevenLabs)
-- Vrai corpus complet des codes algériens depuis [joradp.dz](https://www.joradp.dz)
-- Connexion à l'API officielle Dzair Digital Services pour les démarches en ligne
-- Fine-tuning d'un petit modèle (Qwen2.5 7B) sur le corpus juridique algérien pour réduire les hallucinations
-
----
-
-*Mizan AI — parce que comprendre le droit ne devrait pas être un privilège.*
+*Mizan — parce que comprendre le droit ne devrait pas être un privilège.*

@@ -74,7 +74,7 @@ export default function Scanner() {
         <div>
           <h1 className="text-3xl font-bold">Scanner de contrats</h1>
           <p className="text-slate-400 mt-1">
-            Prends en photo un contrat. L'IA détecte les clauses abusives et cite
+            Prends en photo un contrat. Mizan détecte les clauses abusives et cite
             l'article de loi qui les rend illégales.
           </p>
         </div>
@@ -149,10 +149,13 @@ function ScanResultView({
   const greens = result.clauses.filter((c) => c.verdict === "green").length;
 
   function speakSummary() {
-    speak(
-      `${result.document_type}. Score de légitimité ${result.overall_score} sur 100. ${result.summary}`,
-      { rate: 0.9 }
-    );
+    const reds = result.clauses.filter((c) => c.verdict === "red").length;
+    const ar =
+      `درجة شرعية العقد ${result.overall_score} من 100. ` +
+      (reds > 0
+        ? `انتبه: يحتوي هذا العقد على ${reds} بنود غير قانونية. لا توقّع قبل مراجعتها.`
+        : "العقد متوازن بشكل عام، لكن اقرأ كل بند بعناية.");
+    speak(ar, { rate: 0.9 });
   }
 
   return (
@@ -279,8 +282,7 @@ function StatPill({
 function ClauseCard({ clause }: { clause: import("../../lib/api").ClauseAnalysis }) {
   const s = verdictStyles[clause.verdict];
   function speakClause() {
-    const txt = `${clause.title}. ${clause.explanation}`;
-    speak(txt, { rate: 0.9 });
+    speak(clause.explanation_ar || clause.explanation, { rate: 0.9 });
   }
   return (
     <div className={`card border ${s.ring} p-5`}>

@@ -28,3 +28,8 @@ Thumbs.db
 # ChromaDB local store
 backend/.chroma/
 chroma_db/
+
+# SQLite database
+*.db
+*.sqlite3
+backend/app/data/mizan.db

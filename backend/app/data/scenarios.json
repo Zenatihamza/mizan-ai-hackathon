@@ -4,55 +4,115 @@
       "id": "rental-deposit",
       "day": 1,
       "title": "Le bail",
+      "title_ar": "عقد الإيجار",
+      "domain": "Droit civil",
       "story": "Tu loues ton premier appartement à Alger. Le propriétaire te demande 6 mois de caution en espèces, sans reçu, et refuse de signer un état des lieux.",
+      "story_ar": "تستأجر أول شقة لك في الجزائر. يطلب منك المالك ستة أشهر ككفالة نقداً، دون وصل، ويرفض توقيع محضر معاينة الحالة.",
       "question": "Que fais-tu ?",
+      "question_ar": "ماذا تفعل؟",
+      "lesson": "Un bail sans état des lieux ni reçu de caution te laisse sans preuve. La loi protège le locataire : exige toujours un écrit.",
+      "lesson_ar": "عقد إيجار دون محضر معاينة ودون وصل للكفالة يتركك بلا دليل. القانون يحمي المستأجر: اطلب دائماً وثيقة مكتوبة.",
       "choices": [
-        {"id": "A", "label": "Tu acceptes pour ne pas perdre l'appartement", "correct": false, "xp": 0, "feedback": "Sans état des lieux, tu ne pourras jamais prouver l'état initial du logement. Sans reçu, ta caution n'a aucune existence légale.", "citation": "Art. 482 Code civil"},
-        {"id": "B", "label": "Tu refuses de signer tant qu'il n'y a pas d'état des lieux et de reçu", "correct": true, "xp": 100, "feedback": "Bravo. Un bail sans état des lieux ni reçu de caution te laisse sans recours. La loi protège le preneur — utilise cette protection.", "citation": "Art. 467, 482 Code civil"},
-        {"id": "C", "label": "Tu signes mais tu filmes l'état de l'appartement", "correct": false, "xp": 30, "feedback": "Bonne intuition mais une vidéo non datée n'a pas la même force qu'un état des lieux contradictoire signé.", "citation": "Art. 477 Code civil"}
+        {"id": "A", "label": "Tu acceptes pour ne pas perdre l'appartement", "correct": false, "xp": 0, "feedback": "Sans état des lieux, tu ne pourras jamais prouver l'état initial. Sans reçu, ta caution n'existe pas légalement.", "feedback_ar": "دون محضر معاينة، لن تستطيع إثبات الحالة الأصلية للشقة. ودون وصل، فإن كفالتك لا وجود لها قانوناً.", "citation": "Art. 482 Code civil"},
+        {"id": "B", "label": "Tu refuses tant qu'il n'y a pas d'état des lieux et de reçu", "correct": true, "xp": 100, "feedback": "Bravo. Un bail sans état des lieux ni reçu te laisse sans recours. La loi protège le preneur — utilise cette protection.", "feedback_ar": "أحسنت. عقد دون محضر ودون وصل يتركك دون أي وسيلة دفاع. القانون يحمي المستأجر، فاستعمل هذه الحماية.", "citation": "Art. 467, 482 Code civil"},
+        {"id": "C", "label": "Tu signes mais tu filmes l'appartement", "correct": false, "xp": 30, "feedback": "Bonne intuition, mais une vidéo non datée n'a pas la force d'un état des lieux contradictoire signé.", "feedback_ar": "فكرة جيدة، لكن فيديو دون تاريخ ليس له قوة محضر معاينة موقّع من الطرفين.", "citation": "Art. 477 Code civil"}
       ]
     },
     {
       "id": "labor-overtime",
-      "day": 12,
-      "title": "L'employeur",
+      "day": 8,
+      "title": "Les heures supplémentaires",
+      "title_ar": "الساعات الإضافية",
+      "domain": "Droit du travail",
       "story": "Tu travailles 55 heures par semaine. Ton employeur dit que les heures supplémentaires ne seront pas payées car « c'est la culture de l'entreprise ».",
+      "story_ar": "تعمل 55 ساعة في الأسبوع. يقول لك صاحب العمل إن الساعات الإضافية لن تُدفع لأن «هذه ثقافة المؤسسة».",
       "question": "Quelle est ta première démarche ?",
+      "question_ar": "ما هي خطوتك الأولى؟",
+      "lesson": "La durée légale est 40h/semaine. Toute heure en plus est majorée d'au moins 50%. Ce droit ne se négocie pas.",
+      "lesson_ar": "المدة القانونية هي 40 ساعة في الأسبوع. كل ساعة إضافية تُدفع بزيادة لا تقل عن 50%. هذا الحق لا يخضع للتفاوض.",
       "choices": [
-        {"id": "A", "label": "Tu acceptes : tu as besoin du salaire", "correct": false, "xp": 0, "feedback": "La majoration des heures supplémentaires est un droit légal, pas une faveur. Y renoncer affaiblit tous les travailleurs.", "citation": "Art. 31 Code du travail"},
-        {"id": "B", "label": "Tu dépose une plainte à l'Inspection du travail", "correct": true, "xp": 100, "feedback": "Exact. L'Inspection est gratuite et obligatoire avant le tribunal. Garde tes bulletins de salaire et un journal des heures.", "citation": "Art. 22, 31 Code du travail"},
-        {"id": "C", "label": "Tu vas directement voir un avocat", "correct": false, "xp": 40, "feedback": "Étape valide mais coûteuse. L'Inspection du travail tente la conciliation gratuitement d'abord.", "citation": "Procédure du travail"}
+        {"id": "A", "label": "Tu acceptes : tu as besoin du salaire", "correct": false, "xp": 0, "feedback": "La majoration des heures supplémentaires est un droit légal, pas une faveur. Y renoncer affaiblit tous les travailleurs.", "feedback_ar": "زيادة أجر الساعات الإضافية حق قانوني وليس منّة. التنازل عنه يُضعف كل العمال.", "citation": "Art. 31 Code du travail"},
+        {"id": "B", "label": "Tu déposes une plainte à l'Inspection du travail", "correct": true, "xp": 100, "feedback": "Exact. L'Inspection est gratuite et obligatoire avant le tribunal. Garde tes bulletins et un journal des heures.", "feedback_ar": "صحيح. مفتشية العمل مجانية وإلزامية قبل المحكمة. احتفظ بكشوف راتبك وبسجلٍ لساعات عملك.", "citation": "Art. 22, 31 Code du travail"},
+        {"id": "C", "label": "Tu vas directement voir un avocat", "correct": false, "xp": 40, "feedback": "Étape valable mais coûteuse. L'Inspection du travail tente d'abord la conciliation gratuitement.", "feedback_ar": "خطوة صحيحة لكنها مكلفة. مفتشية العمل تحاول الصلح مجاناً أولاً.", "citation": "Procédure du travail"}
       ]
     },
     {
       "id": "consumer-refund",
-      "day": 24,
-      "title": "Le commerçant",
-      "story": "Tu achètes un téléphone à 80 000 DA. Il ne s'allume plus au bout de 3 jours. Le vendeur refuse le remboursement : « Pas d'échange, pas de retour ».",
+      "day": 15,
+      "title": "Le remboursement refusé",
+      "title_ar": "رفض استرجاع المال",
+      "domain": "Protection du consommateur",
+      "story": "Tu achètes un téléphone à 80 000 DA. Il ne s'allume plus au bout de 3 jours. Le vendeur refuse : « Pas d'échange, pas de retour ».",
+      "story_ar": "تشتري هاتفاً بـ 80 ألف دينار. يتوقف عن العمل بعد ثلاثة أيام. يرفض البائع: «لا استبدال ولا استرجاع».",
       "question": "Quel est ton meilleur levier ?",
+      "question_ar": "ما هي أفضل وسيلة لديك؟",
+      "lesson": "Une clause « ni repris ni échangé » est nulle si le produit est défectueux. Tu as droit au remboursement ou au remplacement.",
+      "lesson_ar": "شرط «لا يُسترجع ولا يُستبدل» باطل إذا كان المنتوج معيباً. لك الحق في استرجاع المبلغ أو الاستبدال.",
       "choices": [
-        {"id": "A", "label": "Tu écris un avis négatif sur Facebook", "correct": false, "xp": 10, "feedback": "Ça fait pression mais ça ne t'apporte pas ton remboursement. Et un avis injurieux peut se retourner contre toi.", "citation": null},
-        {"id": "B", "label": "Tu mets en demeure puis tu saisis la DCP", "correct": true, "xp": 100, "feedback": "La loi 09-03 te donne ce droit — une clause « pas de remboursement » est nulle si le produit est défectueux.", "citation": "Art. 13, 17 Loi 09-03"},
-        {"id": "C", "label": "Tu acceptes un avoir au magasin", "correct": false, "xp": 20, "feedback": "Acceptable mais tu renonces à ton droit au remboursement intégral pour un produit défectueux.", "citation": "Art. 13 Loi 09-03"}
+        {"id": "A", "label": "Tu écris un avis négatif sur Facebook", "correct": false, "xp": 10, "feedback": "Ça met la pression mais ne te rend pas ton argent. Un avis injurieux peut même se retourner contre toi.", "feedback_ar": "هذا يضغط لكنه لا يُرجع مالك. بل إن تعليقاً مسيئاً قد ينقلب ضدك.", "citation": null},
+        {"id": "B", "label": "Tu mets en demeure puis tu saisis la DCP", "correct": true, "xp": 100, "feedback": "La loi 09-03 te donne ce droit — la clause « pas de remboursement » est nulle pour un produit défectueux.", "feedback_ar": "القانون 09-03 يمنحك هذا الحق، وشرط «لا استرجاع» باطل عندما يكون المنتوج معيباً.", "citation": "Art. 13, 17 Loi 09-03"},
+        {"id": "C", "label": "Tu acceptes un avoir au magasin", "correct": false, "xp": 20, "feedback": "Acceptable, mais tu renonces à ton droit au remboursement intégral pour un produit défectueux.", "feedback_ar": "مقبول، لكنك تتنازل عن حقك في استرجاع كامل المبلغ عن منتوج معيب.", "citation": "Art. 13 Loi 09-03"}
+      ]
+    },
+    {
+      "id": "loan-debt",
+      "day": 22,
+      "title": "Le prêt entre amis",
+      "title_ar": "قرض بين الأصدقاء",
+      "domain": "Droit civil",
+      "story": "Un ami te demande de lui prêter 150 000 DA. Il promet de rembourser dans 3 mois mais refuse de signer quoi que ce soit : « entre nous, la confiance suffit ».",
+      "story_ar": "يطلب منك صديق أن تُقرضه 150 ألف دينار. يَعِد بالإرجاع خلال ثلاثة أشهر لكنه يرفض توقيع أي شيء: «بيننا، الثقة تكفي».",
+      "question": "Comment te protèges-tu ?",
+      "question_ar": "كيف تحمي نفسك؟",
+      "lesson": "Au-dessus d'un certain montant, un prêt doit être prouvé par écrit. Une reconnaissance de dette signée évite des années de litige.",
+      "lesson_ar": "فوق مبلغ معيّن، يجب إثبات القرض بوثيقة مكتوبة. سند اعتراف بالدّين موقّع يجنّبك سنوات من النزاع.",
+      "choices": [
+        {"id": "A", "label": "Tu prêtes sans rien : c'est ton ami", "correct": false, "xp": 0, "feedback": "Sans preuve écrite, récupérer la somme devant un juge devient très difficile. L'amitié ne remplace pas un écrit.", "feedback_ar": "دون دليل مكتوب، يصبح استرجاع المبلغ أمام القاضي صعباً جداً. الصداقة لا تُغني عن الوثيقة.", "citation": "Art. 106 Code civil"},
+        {"id": "B", "label": "Tu fais signer une reconnaissance de dette datée", "correct": true, "xp": 100, "feedback": "Parfait. Un écrit daté et signé est ta preuve devant le tribunal. C'est protéger l'amitié, pas s'en méfier.", "feedback_ar": "ممتاز. وثيقة مؤرَّخة وموقَّعة هي دليلك أمام المحكمة. هذا حماية للصداقة لا تشكيك فيها.", "citation": "Art. 106 Code civil"},
+        {"id": "C", "label": "Tu envoies l'argent par virement seulement", "correct": false, "xp": 50, "feedback": "Mieux que rien : le virement prouve le versement, mais pas l'obligation de rembourser. Ajoute un écrit.", "feedback_ar": "أفضل من لا شيء: التحويل يُثبت دفع المبلغ، لكنه لا يُثبت الالتزام بالإرجاع. أضف وثيقة مكتوبة.", "citation": "Art. 124 Code civil"}
       ]
     },
     {
       "id": "labor-dismissal",
-      "day": 36,
+      "day": 30,
       "title": "Le licenciement",
+      "title_ar": "الطرد من العمل",
+      "domain": "Droit du travail",
       "story": "Ton patron te licencie verbalement « pour mauvaise attitude », sans procédure ni préavis. Tu as 4 ans d'ancienneté.",
+      "story_ar": "يطردك صاحب العمل شفهياً «بسبب سوء السلوك»، دون إجراء ودون إشعار مسبق. لديك أربع سنوات من الأقدمية.",
       "question": "Quels sont tes droits ?",
+      "question_ar": "ما هي حقوقك؟",
+      "lesson": "Un licenciement sans cause réelle, sans procédure disciplinaire écrite et sans préavis est illégal et ouvre droit à réintégration ou indemnité.",
+      "lesson_ar": "الطرد دون سبب حقيقي ودون إجراء تأديبي مكتوب ودون إشعار مسبق غير قانوني، ويمنح الحق في إعادة الإدماج أو في تعويض.",
       "choices": [
-        {"id": "A", "label": "Aucun — il est le patron", "correct": false, "xp": 0, "feedback": "Faux. Un licenciement sans procédure disciplinaire ni cause réelle ouvre droit à des indemnités importantes.", "citation": "Art. 73 Code du travail"},
-        {"id": "B", "label": "Tu peux exiger ta réintégration ou une indemnité", "correct": true, "xp": 100, "feedback": "Exact. Le tribunal social peut ordonner réintégration OU indemnité. Saisis l'Inspection sous 15 jours.", "citation": "Art. 73, 74 Code du travail"},
-        {"id": "C", "label": "Seulement le solde de tout compte", "correct": false, "xp": 20, "feedback": "Insuffisant. Tu as droit à bien plus : préavis, indemnités de licenciement, possibles dommages-intérêts.", "citation": "Art. 74 Code du travail"}
+        {"id": "A", "label": "Aucun — il est le patron", "correct": false, "xp": 0, "feedback": "Faux. Un licenciement sans procédure ni cause réelle ouvre droit à des indemnités importantes.", "feedback_ar": "خطأ. الطرد دون إجراء ودون سبب حقيقي يمنح الحق في تعويضات معتبرة.", "citation": "Art. 73 Code du travail"},
+        {"id": "B", "label": "Tu peux exiger réintégration ou indemnité", "correct": true, "xp": 100, "feedback": "Exact. Le tribunal social peut ordonner réintégration OU indemnité. Saisis l'Inspection rapidement.", "feedback_ar": "صحيح. المحكمة الاجتماعية يمكن أن تأمر بإعادة الإدماج أو بالتعويض. توجّه بسرعة إلى المفتشية.", "citation": "Art. 73, 74 Code du travail"},
+        {"id": "C", "label": "Seulement le solde de tout compte", "correct": false, "xp": 20, "feedback": "Insuffisant. Tu as droit à bien plus : préavis, indemnités de licenciement, possibles dommages-intérêts.", "feedback_ar": "غير كافٍ. لك الحق في أكثر من ذلك: الإشعار المسبق، تعويضات الطرد، وربما تعويضات عن الضرر.", "citation": "Art. 74 Code du travail"}
+      ]
+    },
+    {
+      "id": "eviction",
+      "day": 40,
+      "title": "L'expulsion express",
+      "title_ar": "الطرد من السكن",
+      "domain": "Droit civil",
+      "story": "Ton propriétaire débarque et t'ordonne de quitter l'appartement sous 48 heures, alors que ton bail court encore. Il menace de changer la serrure.",
+      "story_ar": "يأتي المالك ويأمرك بمغادرة الشقة خلال 48 ساعة، رغم أن عقد إيجارك ما زال سارياً. ويهدّد بتغيير القفل.",
+      "question": "Que dit la loi ?",
+      "question_ar": "ماذا يقول القانون؟",
+      "lesson": "Un propriétaire ne peut pas t'expulser lui-même : seule une décision de justice le permet. Se faire justice soi-même est illégal.",
+      "lesson_ar": "لا يحق للمالك أن يطردك بنفسه: وحده حكم قضائي يسمح بذلك. اقتضاء الحق بالذات غير قانوني.",
+      "choices": [
+        {"id": "A", "label": "Tu pars : c'est sa propriété", "correct": false, "xp": 0, "feedback": "Non. Tant que le bail court, tu as droit à la jouissance paisible. Une expulsion sans jugement est illégale.", "feedback_ar": "لا. ما دام العقد سارياً، لك الحق في الانتفاع الهادئ بالسكن. الطرد دون حكم قضائي غير قانوني.", "citation": "Art. 477 Code civil"},
+        {"id": "B", "label": "Tu refuses et exiges une décision de justice", "correct": true, "xp": 100, "feedback": "Exact. Seul un juge peut ordonner une expulsion. Changer la serrure est une voie de fait, sanctionnée par la loi.", "feedback_ar": "صحيح. وحده القاضي يمكنه الأمر بالطرد. تغيير القفل اعتداء مادي يعاقب عليه القانون.", "citation": "Art. 477 Code civil"},
+        {"id": "C", "label": "Tu paies un mois de plus pour gagner du temps", "correct": false, "xp": 30, "feedback": "Tu n'as pas à payer pour un droit que tu as déjà. Garde ton argent et invoque ton bail.", "feedback_ar": "لست مضطراً للدفع مقابل حق تملكه أصلاً. احتفظ بمالك واحتجّ بعقد إيجارك.", "citation": "Art. 467 Code civil"}
       ]
     }
   ],
   "levels": [
     {"name": "Citoyen", "name_ar": "مواطن", "min_xp": 0, "emoji": "🥉"},
-    {"name": "Défenseur des droits", "name_ar": "مدافع", "min_xp": 150, "emoji": "🥈"},
-    {"name": "Maître du droit", "name_ar": "خبير", "min_xp": 300, "emoji": "🥇"},
-    {"name": "Protecteur de la communauté", "name_ar": "حامي", "min_xp": 500, "emoji": "🏆"}
+    {"name": "Défenseur des droits", "name_ar": "مدافع عن الحقوق", "min_xp": 200, "emoji": "🥈"},
+    {"name": "Maître du droit", "name_ar": "خبير في القانون", "min_xp": 400, "emoji": "🥇"},
+    {"name": "Protecteur de la communauté", "name_ar": "حامي المجتمع", "min_xp": 550, "emoji": "🏆"}
   ]
 }

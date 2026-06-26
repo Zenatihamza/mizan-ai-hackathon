@@ -7,47 +7,43 @@ import {
   XCircle,
   ArrowRight,
   Sparkles,
+  GraduationCap,
+  BookOpen,
 } from "lucide-react";
-import {
-  answerScenario,
-  getLevels,
-  listScenarios,
-  type AnswerResponse,
-  type Level,
-  type Scenario,
-} from "../../lib/api";
-import { speak } from "../../lib/voice";
-
-const XP_KEY = "mizan_rpg_xp";
-const IDX_KEY = "mizan_rpg_idx";
+import * as api from "../../lib/api";
+import { speak, stopSpeaking } from "../../lib/voice";
 
 export default function RPG() {
-  const [scenarios, setScenarios] = useState<Scenario[]>([]);
-  const [levels, setLevels] = useState<Level[]>([]);
-  const [idx, setIdx] = useState<number>(() =>
-    Number(localStorage.getItem(IDX_KEY) || 0)
-  );
-  const [xp, setXp] = useState<number>(() =>
-    Number(localStorage.getItem(XP_KEY) || 0)
-  );
+  const [scenarios, setScenarios] = useState<api.Scenario[]>([]);
+  const [levels, setLevels] = useState<api.Level[]>([]);
+  const [idx, setIdx] = useState(0);
+  const [xp, setXp] = useState(0);
+  const [completed, setCompleted] = useState<string[]>([]);
   const [picked, setPicked] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<AnswerResponse | null>(null);
+  const [feedback, setFeedback] = useState<api.AnswerResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    listScenarios().then(setScenarios).catch(() => {});
-    getLevels().then(setLevels).catch(() => {});
+    Promise.all([
+      api.listScenarios(),
+      api.getLevels(),
+      api.getProgress().catch((): api.Progress => ({ xp: 0, completed: [] })),
+    ])
+      .then(([scn, lvls, prog]) => {
+        setScenarios(scn);
+        setLevels(lvls);
+        setXp(prog.xp);
+        setCompleted(prog.completed);
+        const firstUnfinished = scn.findIndex((s) => !prog.completed.includes(s.id));
+        setIdx(firstUnfinished === -1 ? scn.length : firstUnfinished);
+      })
+      .finally(() => setReady(true));
+    return () => stopSpeaking();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem(XP_KEY, String(xp));
-  }, [xp]);
-  useEffect(() => {
-    localStorage.setItem(IDX_KEY, String(idx));
-  }, [idx]);
-
   const scenario = scenarios[idx];
-  const finished = scenarios.length > 0 && idx >= scenarios.length;
+  const finished = ready && scenarios.length > 0 && idx >= scenarios.length;
 
   const currentLevel = useMemo(() => {
     if (!levels.length) return null;
@@ -58,8 +54,8 @@ export default function RPG() {
 
   const nextLevel = useMemo(() => {
     if (!levels.length || !currentLevel) return null;
-    const idxL = levels.findIndex((l) => l.name === currentLevel.name);
-    return levels[idxL + 1] || null;
+    const i = levels.findIndex((l) => l.name === currentLevel.name);
+    return levels[i + 1] || null;
   }, [levels, currentLevel]);
 
   async function submit(choiceId: string) {
@@ -67,43 +63,55 @@ export default function RPG() {
     setPicked(choiceId);
     setLoading(true);
     try {
-      const r = await answerScenario(scenario.id, choiceId);
+      const r = await api.answerScenario(scenario.id, choiceId);
       setFeedback(r);
-      setXp((v) => v + r.xp);
+      const newXp = xp + r.xp;
+      const newCompleted = Array.from(new Set([...completed, scenario.id]));
+      setXp(newXp);
+      setCompleted(newCompleted);
+      api.saveProgress(newXp, newCompleted).catch(() => {});
+      if (r.lesson_ar) setTimeout(() => speak(r.lesson_ar!, { rate: 0.9 }), 400);
     } finally {
       setLoading(false);
     }
   }
 
   function next() {
+    stopSpeaking();
     setPicked(null);
     setFeedback(null);
     setIdx((i) => i + 1);
   }
 
-  function restart() {
+  async function restart() {
+    stopSpeaking();
     setXp(0);
+    setCompleted([]);
     setIdx(0);
     setPicked(null);
     setFeedback(null);
+    api.saveProgress(0, []).catch(() => {});
   }
 
-  if (!scenarios.length) {
-    return <div className="text-slate-400">Chargement du simulateur…</div>;
+  function narrate() {
+    if (!scenario) return;
+    const ar = [scenario.story_ar, scenario.question_ar].filter(Boolean).join(" ");
+    speak(ar || `${scenario.story} ${scenario.question}`, { rate: 0.9 });
   }
 
-  if (finished) {
-    return <FinalScreen xp={xp} level={currentLevel} onRestart={restart} />;
-  }
+  if (!ready) return <div className="text-slate-400">Chargement du simulateur…</div>;
+  if (finished) return <FinalScreen xp={xp} level={currentLevel} onRestart={restart} />;
 
   return (
     <div className="space-y-6">
       <header className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-3xl font-bold">Simulateur de vie juridique</h1>
+          <h1 className="text-3xl font-bold flex items-center gap-2">
+            <GraduationCap className="w-7 h-7 text-gold" /> Apprendre mes droits
+          </h1>
           <p className="text-slate-400 mt-1">
-            Vis des situations réelles. Chaque bonne décision te rapporte de l'XP
-            et un vrai apprentissage du droit algérien.
+            Vis des situations réelles. Chaque décision t'apprend une règle du droit
+            algérien, expliquée à voix haute en arabe.
           </p>
         </div>
         <XPHeader
@@ -116,20 +124,25 @@ export default function RPG() {
       </header>
 
       <article className="card p-6 md:p-8 space-y-5">
-        <div className="flex items-center justify-between text-xs uppercase tracking-widest text-slate-500">
-          <span>
-            Jour {scenario.day} · {scenario.title}
-          </span>
-          <button
-            onClick={() =>
-              speak(`${scenario.story}. ${scenario.question}`, { rate: 0.9 })
-            }
-            className="btn-ghost !px-3 !py-1.5 !text-xs"
-          >
-            <Volume2 className="w-3.5 h-3.5" /> Darija
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-slate-500">
+            <span className="pill bg-slate-800 text-slate-300">Jour {scenario.day}</span>
+            <span className="pill bg-violet-500/10 text-violet-300 border border-violet-500/30">
+              {scenario.domain}
+            </span>
+            <span>{scenario.title}</span>
+          </div>
+          <button onClick={narrate} className="btn-ghost !px-3 !py-1.5 !text-xs" title="Écouter en arabe">
+            <Volume2 className="w-3.5 h-3.5" /> Écouter en arabe
           </button>
         </div>
+
         <p className="text-lg leading-relaxed">{scenario.story}</p>
+        {scenario.story_ar && (
+          <p className="text-base leading-relaxed text-slate-400" dir="rtl">
+            {scenario.story_ar}
+          </p>
+        )}
         <p className="font-semibold text-gold">{scenario.question}</p>
 
         <div className="space-y-3">
@@ -175,27 +188,54 @@ export default function RPG() {
         </div>
 
         {feedback && (
-          <div
-            className={`rounded-xl border p-4 space-y-2 ${
-              feedback.correct
-                ? "border-emerald-500/40 bg-emerald-500/5"
-                : "border-amber-500/40 bg-amber-500/5"
-            }`}
-          >
-            <div className="flex items-center gap-2 font-semibold">
-              {feedback.correct ? (
-                <>
-                  <Sparkles className="w-4 h-4 text-emerald-400" /> +{feedback.xp} XP
-                </>
-              ) : (
-                <>Apprentissage · +{feedback.xp} XP</>
+          <div className="space-y-3">
+            <div
+              className={`rounded-xl border p-4 space-y-1.5 ${
+                feedback.correct
+                  ? "border-emerald-500/40 bg-emerald-500/5"
+                  : "border-amber-500/40 bg-amber-500/5"
+              }`}
+            >
+              <div className="flex items-center gap-2 font-semibold">
+                {feedback.correct ? (
+                  <>
+                    <Sparkles className="w-4 h-4 text-emerald-400" /> +{feedback.xp} XP
+                  </>
+                ) : (
+                  <>Apprentissage · +{feedback.xp} XP</>
+                )}
+              </div>
+              <p className="text-sm text-slate-200">{feedback.feedback}</p>
+              {feedback.citation && (
+                <div className="text-xs text-gold">📖 {feedback.citation}</div>
               )}
             </div>
-            <p className="text-sm text-slate-200">{feedback.feedback}</p>
-            {feedback.citation && (
-              <div className="text-xs text-gold">📖 {feedback.citation}</div>
+
+            {feedback.lesson && (
+              <div className="rounded-xl border border-gold/30 bg-gold/5 p-4">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-gold">
+                    <BookOpen className="w-3.5 h-3.5" /> Ce qu'il faut retenir
+                  </div>
+                  {feedback.lesson_ar && (
+                    <button
+                      onClick={() => speak(feedback.lesson_ar!, { rate: 0.9 })}
+                      className="btn-ghost !px-2.5 !py-1 !text-xs"
+                    >
+                      <Volume2 className="w-3.5 h-3.5" /> Réécouter
+                    </button>
+                  )}
+                </div>
+                <p className="text-sm text-slate-100">{feedback.lesson}</p>
+                {feedback.lesson_ar && (
+                  <p className="text-sm text-slate-400 mt-2" dir="rtl">
+                    {feedback.lesson_ar}
+                  </p>
+                )}
+              </div>
             )}
-            <button onClick={next} className="btn-primary mt-2">
+
+            <button onClick={next} className="btn-primary">
               {idx + 1 < scenarios.length ? "Scénario suivant" : "Voir le bilan"}
               <ArrowRight className="w-4 h-4" />
             </button>
@@ -205,7 +245,7 @@ export default function RPG() {
 
       <div className="text-center">
         <button onClick={restart} className="btn-ghost !text-xs">
-          <RotateCcw className="w-3.5 h-3.5" /> Recommencer
+          <RotateCcw className="w-3.5 h-3.5" /> Recommencer depuis le début
         </button>
       </div>
     </div>
@@ -220,8 +260,8 @@ function XPHeader({
   total,
 }: {
   xp: number;
-  currentLevel: Level | null;
-  nextLevel: Level | null;
+  currentLevel: api.Level | null;
+  nextLevel: api.Level | null;
   scenarioIdx: number;
   total: number;
 }) {
@@ -239,16 +279,14 @@ function XPHeader({
     <div className="card px-4 py-3 min-w-[260px]">
       <div className="flex items-center justify-between text-xs text-slate-400">
         <span>
-          Scénario {scenarioIdx}/{total}
+          Scénario {Math.min(scenarioIdx, total)}/{total}
         </span>
         <span className="font-semibold text-gold">{xp} XP</span>
       </div>
       <div className="flex items-center gap-2 mt-1">
         <span className="text-lg">{currentLevel?.emoji}</span>
         <div className="flex-1">
-          <div className="text-sm font-semibold leading-none">
-            {currentLevel?.name || "—"}
-          </div>
+          <div className="text-sm font-semibold leading-none">{currentLevel?.name || "—"}</div>
           <div className="h-1.5 mt-1.5 bg-slate-800 rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-gold to-amber-200 transition-all"
@@ -272,22 +310,26 @@ function FinalScreen({
   onRestart,
 }: {
   xp: number;
-  level: Level | null;
+  level: api.Level | null;
   onRestart: () => void;
 }) {
   return (
     <div className="card p-10 text-center max-w-xl mx-auto">
       <Trophy className="w-14 h-14 mx-auto text-gold mb-4" />
-      <h2 className="text-3xl font-bold">Bilan</h2>
+      <h2 className="text-3xl font-bold">Bravo, parcours terminé</h2>
       <div className="mt-6 text-6xl">{level?.emoji}</div>
       <div className="text-xl font-semibold mt-2">{level?.name}</div>
+      {level?.name_ar && (
+        <div className="text-slate-400" dir="rtl">
+          {level.name_ar}
+        </div>
+      )}
       <div className="text-slate-400 mt-1">{xp} XP totalisés</div>
       <p className="text-sm text-slate-400 mt-6">
-        Tu connais maintenant tes droits sur le bail, le travail, la consommation
-        et le licenciement. Partage ce jeu — chaque citoyen informé est un piège
-        évité.
+        Tu connais maintenant tes droits sur le bail, le travail, la consommation,
+        le prêt et le licenciement. Ta progression est enregistrée sur ton compte.
       </p>
-      <button onClick={onRestart} className="btn-primary mt-6">
+      <button onClick={onRestart} className="btn-primary mt-6 mx-auto">
         <RotateCcw className="w-4 h-4" /> Rejouer
       </button>
     </div>

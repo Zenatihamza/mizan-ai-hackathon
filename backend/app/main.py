@@ -2,12 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import FRONTEND_ORIGIN
-from app.routers import scanner, gps, rpg
+from app.database import init_db
+from app.routers import scanner, gps, rpg, auth, chat
 
 app = FastAPI(
-    title="Mizan AI",
-    description="Legal access platform for Algerian citizens",
-    version="0.1.0",
+    title="Mizan",
+    description="Plateforme d'accès au droit pour les citoyens algériens",
+    version="0.2.0",
 )
 
 app.add_middleware(
@@ -18,6 +19,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.on_event("startup")
+def on_startup():
+    init_db()
+
+
+app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(scanner.router, prefix="/api/scanner", tags=["scanner"])
 app.include_router(gps.router, prefix="/api/gps", tags=["gps"])
 app.include_router(rpg.router, prefix="/api/rpg", tags=["rpg"])
@@ -25,7 +34,7 @@ app.include_router(rpg.router, prefix="/api/rpg", tags=["rpg"])
 
 @app.get("/")
 def root():
-    return {"name": "Mizan AI", "status": "ok"}
+    return {"name": "Mizan", "status": "ok"}
 
 
 @app.get("/api/health")
