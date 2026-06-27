@@ -1,0 +1,13 @@
+classe,precision,recall,f1,support
+consumer,1.00,0.60,0.75,5
+custody,1.00,0.80,0.89,5
+dismissal,0.62,1.00,0.77,5
+family,0.86,1.00,0.92,6
+fraud,0.86,1.00,0.92,6
+inheritance,0.83,1.00,0.91,5
+labor,1.00,0.67,0.80,6
+legal_aid,1.00,1.00,1.00,5
+neighbor,1.00,1.00,1.00,5
+rental,1.00,0.80,0.89,5
+accuracy_holdout,,,0.887,53
+accuracy_crossval,,,0.919,210
